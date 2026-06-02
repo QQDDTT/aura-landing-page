@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Editor - 探索者极客鉴权入口 (DARK)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+    .aura-dark-theme, .aura-dark-theme * { scrollbar-width: thin; scrollbar-color: #4a5568 #1a202c; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-track { background: #1a202c; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb:hover { background: #718096; }
+      margin: 0;
+      padding: 2rem;
+      background-color: #05070a;
+      color: #a9b1d6;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    }
+    .login-container {
+      max-width: 420px;
+      margin: 4rem auto;
+      background-color: #0d1117;
+      border: 1px solid #00d2ff;
+      border-radius: 4px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .scanline {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, #00d2ff, transparent);
+      animation: scan 3s linear infinite;
+    }
+    @keyframes scan {
+      0% { top: 0%; }
+      50% { top: 100%; }
+      100% { top: 0%; }
+    }
+    .input-field {
+      width: 100%;
+      box-sizing: border-box;
+      background: #0d1117;
+      border: 1px solid #3b4261;
+      border-radius: 3px;
+      padding: 10px 12px;
+      color: #c0caf5;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.85rem;
+      outline: none;
+      margin-top: 6px;
+    }
+    .input-field:focus {
+      border-color: #00d2ff;
+    }
+    .btn-action {
+      width: 100%;
+      background: transparent;
+      border: 1px solid #00d2ff;
+      color: #00d2ff;
+      font-weight: bold;
+      padding: 12px;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+      font-family: 'Fira Code', monospace;
+      text-transform: uppercase;
+    }
+    .btn-action:hover {
+      background: rgba(0, 210, 255, 0.1);
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+    }
+</style>
+</head>
+<body>
+<div class="aura-dark-theme">
+  <div class="login-canvas-wrapper" style="width: 1200px; height: 620px; box-sizing: border-box; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-left: auto; margin-right: auto; background-color: #05070a; position: relative; border: 1px solid #24283b; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);">
+  <div class="login-container">
+    <div class="scanline"></div>
+    <div style="font-family: 'Fira Code', monospace; font-size: 1.5rem; color: #00d2ff; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px;">
+      <span>&gt;_</span> Aura 开发门户
+    </div>
+    <div style="font-size: 0.75rem; color: #565f89; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 1px;">
+      [Access Level: Develop | Cgroups v2]
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; margin-bottom: 2rem;">
+      <div>
+        <label style="font-size: 0.75rem; color: #565f89; font-family: 'Fira Code', monospace;">EXPLORER_ID // 开发者账户</label>
+        <input type="text" placeholder="explorer@aura-os.net" class="input-field">
+      </div>
+      <div>
+        <label style="font-size: 0.75rem; color: #565f89; font-family: 'Fira Code', monospace;">DEV_TOKEN // 隔离沙箱私有密匙</label>
+        <input type="password" placeholder="••••••••••••" class="input-field">
+      </div>
+      <!-- Quantum Entropy Matrix Indicator -->
+      <div style="background: #0d1117; padding: 10px; border-left: 2px solid #9333ea; font-size: 0.75rem;">
+        <div style="display: flex; justify-content: space-between; font-family: 'Fira Code', monospace; color: #565f89; margin-bottom: 4px;">
+          <span>SANDBOX_LEVEL:</span>
+          <span style="color: #9333ea;">CLONE_NEWNS</span>
+        </div>
+        <div style="color: #787c99;">只有开发组 Explorer 授权用户允许在此派生物理隔离的 Python 技能运行时。</div>
+      </div>
+    </div>
+    <button class="btn-action">初始化工作区 &gt;&gt;</button>
+    <div style="margin-top: 1.5rem; font-size: 0.65rem; color: #565f89; font-family: 'Fira Code', monospace; text-align: center;">
+      系统节点: DE7C8-E93C // 状态: 安全沙箱
+    </div>
+  </div>
+  </div>
+</div>
+</body>
+</html>

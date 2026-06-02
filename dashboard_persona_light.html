@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.3 核心人格与策略控制中心 (Persona Configurator) (LIGHT)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; padding:2rem; background-color:#f0f4f8; color:#1a202c; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; }
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  </style>
+</head>
+<body>
+<div class="aura-light-theme">
+<div style="width:1200px;height:620px;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;margin:0 auto 2rem;background:#f8fafc;color:#1a202c;padding:1rem;border-radius:12px;border:1px solid #e2e8f0;box-shadow:0 4px 20px rgba(0,0,0,0.08);display:flex;flex-direction:column;gap:0.8rem;">
+  <!-- Header -->
+  <div style="display:flex;justify-content:space-between;align-items:center;background:#ffffff;padding:0.85rem 1.5rem;border-radius:8px;border:1px solid #e2e8f0;border-top:2px solid #d97706;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,0.06);">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="color:#d97706;font-size:1.4rem;">🎭</span>
+      <strong style="font-size:1.1rem;letter-spacing:1px;color:#1a202c;">PERSONA RULES</strong>
+      <span style="background:rgba(217,119,6,0.1);color:#b45309;font-size:0.7rem;padding:2px 6px;border-radius:4px;border:1px solid rgba(217,119,6,0.25);">aura.yaml</span>
+    </div>
+    <div style="display:flex;gap:1rem;align-items:center;">
+      <span style="font-size:0.8rem;color:#718096;padding:4px 8px;cursor:pointer;">Core</span>
+      <span style="font-size:0.8rem;color:#718096;padding:4px 8px;cursor:pointer;">Audit</span>
+      <span style="font-size:0.8rem;color:#718096;padding:4px 8px;cursor:pointer;">Memory</span>
+      <span style="font-size:0.8rem;color:#d97706;padding:4px 8px;cursor:pointer;border-bottom:2px solid #d97706;">Persona</span>
+      <span style="font-size:0.8rem;color:#718096;padding:4px 8px;cursor:pointer;">Settings</span>
+      <div style="width:1px;height:14px;background:#e2e8f0;margin:0 4px;"></div>
+      <span style="font-size:0.9rem;cursor:pointer;color:#718096;">🌐</span>
+      <span style="font-size:0.9rem;cursor:pointer;color:#3182ce;">☀️</span>
+    </div>
+    <div style="font-size:0.8rem;color:#10b981;display:flex;align-items:center;gap:8px;">
+      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;"></span>
+      KERNEL ONLINE
+    </div>
+  </div>
+  <!-- Target Bot Selector (Bots Style) -->
+  <div style="display:flex;gap:1rem;flex-shrink:0;overflow-x:auto;padding-bottom:0.8rem;">
+    <!-- Bot 1: Active -->
+    <div style="flex:0 0 320px;display:flex;align-items:center;justify-content:space-between;background:rgba(217,119,6,0.08);padding:10px 12px;border-radius:8px;border:1px solid rgba(217,119,6,0.25);cursor:pointer;">
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <strong style="font-size:0.85rem;color:#1a202c;">@aura_primary_bot</strong>
+        <span style="font-size:0.72rem;color:#718096;font-family:monospace;">Token: 12345:AABBcc...</span>
+        <span style="font-size:0.68rem;color:#d97706;">● Editing Persona</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:32px;height:16px;background:#d97706;border-radius:8px;position:relative;">
+          <div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Bot 2: Other -->
+    <div style="flex:0 0 320px;display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;cursor:pointer;">
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <strong style="font-size:0.85rem;color:#4a5568;">@aura_research_bot</strong>
+        <span style="font-size:0.72rem;color:#a0aec0;font-family:monospace;">Token: 98765:XYZabc...</span>
+        <span style="font-size:0.68rem;color:#a0aec0;">○ Idle</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:32px;height:16px;background:#cbd5e1;border-radius:8px;position:relative;">
+          <div style="width:12px;height:12px;background:#f8fafc;border-radius:50%;position:absolute;left:2px;top:2px;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Bot 3: Other -->
+    <div style="flex:0 0 320px;display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;cursor:pointer;">
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <strong style="font-size:0.85rem;color:#4a5568;">@aura_ops_bot</strong>
+        <span style="font-size:0.72rem;color:#a0aec0;font-family:monospace;">Token: 13579:MNOpqr...</span>
+        <span style="font-size:0.68rem;color:#a0aec0;">○ Idle</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:32px;height:16px;background:#cbd5e1;border-radius:8px;position:relative;">
+          <div style="width:12px;height:12px;background:#f8fafc;border-radius:50%;position:absolute;left:2px;top:2px;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Bot 4: Other -->
+    <div style="flex:0 0 320px;display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;cursor:pointer;">
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <strong style="font-size:0.85rem;color:#4a5568;">@aura_qa_bot</strong>
+        <span style="font-size:0.72rem;color:#a0aec0;font-family:monospace;">Token: 24680:QWErty...</span>
+        <span style="font-size:0.68rem;color:#10b981;">● Active (Running Tests)</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <div style="width:32px;height:16px;background:#10b981;border-radius:8px;position:relative;">
+          <div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Add New Bot -->
+    <button style="flex:0 0 200px;padding:10px;background:transparent;border:1px dashed #cbd5e1;color:#718096;border-radius:8px;font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+      <span>➕</span> 新增代理 (New Bot)
+    </button>
+  </div>
+  <!-- Main Row -->
+  <div style="display:flex;gap:1rem;flex:1;min-height:0;">
+    <!-- 左：System Prompt 编辑器 -->
+    <div style="flex:1;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;min-width:0;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h3 style="color:#d97706;font-size:0.85rem;margin:0;display:flex;align-items:center;gap:6px;"><span>📄</span> Core System Prompt (核心驱动准则)</h3>
+        <div style="display:flex;gap:0.5rem;">
+          <span style="font-size:0.7rem;color:#718096;background:#f7fafc;padding:2px 8px;border-radius:4px;border:1px solid #e2e8f0;cursor:pointer;">Preview</span>
+          <span style="font-size:0.7rem;color:#d97706;background:rgba(217,119,6,0.08);padding:2px 8px;border-radius:4px;border:1px solid rgba(217,119,6,0.2);cursor:pointer;">Edit ✓</span>
+        </div>
+      </div>
+      <div style="flex:1;background:#f7fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem;font-family:'Fira Code',monospace;font-size:0.78rem;line-height:1.7;overflow-y:auto;color:#2d3748;">
+        <span style="color:#a0aec0;"># identity</span><br>
+        <span style="color:#d97706;">identity:</span><br>
+        &nbsp;&nbsp;<span style="color:#718096;">name:</span> <span style="color:#059669;">"Aura"</span><br>
+        &nbsp;&nbsp;<span style="color:#718096;">version:</span> <span style="color:#059669;">"4.0"</span><br>
+        &nbsp;&nbsp;<span style="color:#718096;">description:</span> <span style="color:#059669;">"Advanced autonomous agent governed by VFE principles."</span><br>
+        <br>
+        <span style="color:#a0aec0;"># behavior constraints</span><br>
+        <span style="color:#d97706;">behavior:</span><br>
+        &nbsp;&nbsp;<span style="color:#4a5568;">- Always minimize system entropy (VFE).</span><br>
+        &nbsp;&nbsp;<span style="color:#4a5568;">- Use concise, highly technical language.</span><br>
+        &nbsp;&nbsp;<span style="color:#4a5568;">- Proactively request clarification when intent is ambiguous.</span><br>
+        &nbsp;&nbsp;<span style="color:#4a5568;">- Respect sandbox isolation boundaries at all times.</span><br>
+        <br>
+        <span style="color:#a0aec0;"># worldview parameters</span><br>
+        <span style="color:#d97706;">worldview:</span><br>
+        &nbsp;&nbsp;<span style="color:#718096;">resonance_threshold:</span> <span style="color:#3182ce;">0.85</span><br>
+        &nbsp;&nbsp;<span style="color:#718096;">safety_limit:</span> <span style="color:#e53e3e;">"High"</span><br>
+        &nbsp;&nbsp;<span style="color:#718096;">creativity:</span> <span style="color:#805ad5;">0.72</span><br>
+        &nbsp;&nbsp;<span style="color:#718096;">rigidness:</span> <span style="color:#d97706;">0.45</span><br>
+        <br>
+        <span style="color:#a0aec0;"># life philosophy</span><br>
+        <span style="color:#d97706;">life_view:</span><br>
+        &nbsp;&nbsp;<span style="color:#4a5568;">- Treat every session as an irreversible thermodynamic process.</span><br>
+        &nbsp;&nbsp;<span style="color:#4a5568;">- Knowledge is the only persistent capital — distill aggressively.</span><br>
+        <br>
+        <span style="color:#a0aec0;"># interaction preferences</span><br>
+        <span style="color:#d97706;">interaction:</span><br>
+        &nbsp;&nbsp;<span style="color:#718096;">default_language:</span> <span style="color:#059669;">"zh-CN"</span>
+      </div>
+      <div style="display:flex;gap:0.5rem;">
+        <button style="padding:8px 16px;background:linear-gradient(135deg,#b45309,#d97706);border:none;color:#fff;border-radius:6px;font-size:0.8rem;cursor:pointer;font-weight:bold;">💾 应用配置 (Apply)</button>
+        <button style="padding:8px 16px;background:#f7fafc;border:1px solid #e2e8f0;color:#718096;border-radius:6px;font-size:0.8rem;cursor:pointer;">↩ 重置默认</button>
+      </div>
+    </div>
+    <!-- 右列 -->
+    <div style="display:flex;flex-direction:column;gap:1rem;width:320px;flex-shrink:0;overflow-y:auto;padding-right:4px;">
+      <!-- 雷达图 -->
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:1.2rem;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+        <h3 style="color:#d97706;font-size:0.85rem;margin:0 0 0.8rem 0;display:flex;align-items:center;gap:6px;"><span>🕸</span> 三观参数雷达图</h3>
+        <div style="display:flex;justify-content:center;">
+          <svg width="180" height="160" viewBox="0 0 180 160" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="90,18 148,50 148,110 90,142 32,110 32,50" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+            <polygon points="90,34 136,60 136,100 90,126 44,100 44,60" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+            <polygon points="90,50 124,70 124,90 90,110 56,90 56,70" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+            <line x1="90" y1="18" x2="90" y2="142" stroke="#e2e8f0" stroke-width="1"/>
+            <line x1="32" y1="50" x2="148" y2="110" stroke="#e2e8f0" stroke-width="1"/>
+            <line x1="148" y1="50" x2="32" y2="110" stroke="#e2e8f0" stroke-width="1"/>
+            <polygon points="90,25 143,56 141,103 90,132 43,100 44,58" fill="rgba(217,119,6,0.12)" stroke="#d97706" stroke-width="1.5" stroke-linejoin="round"/>
+            <circle cx="90" cy="25" r="3" fill="#d97706" opacity="0.9"/>
+            <circle cx="143" cy="56" r="3" fill="#3182ce" opacity="0.9"/>
+            <circle cx="141" cy="103" r="3" fill="#e53e3e" opacity="0.9"/>
+            <circle cx="90" cy="132" r="3" fill="#805ad5" opacity="0.9"/>
+            <circle cx="43" cy="100" r="3" fill="#d97706" opacity="0.9"/>
+            <circle cx="44" cy="58" r="3" fill="#10b981" opacity="0.9"/>
+            <text x="90" y="12" text-anchor="middle" fill="#d97706" font-size="8" font-family="Inter">Resonance</text>
+            <text x="155" y="54" text-anchor="start" fill="#3182ce" font-size="8" font-family="Inter">Safety</text>
+            <text x="153" y="112" text-anchor="start" fill="#e53e3e" font-size="8" font-family="Inter">Temp</text>
+            <text x="90" y="155" text-anchor="middle" fill="#805ad5" font-size="8" font-family="Inter">Rigidness</text>
+            <text x="10" y="112" text-anchor="start" fill="#d97706" font-size="8" font-family="Inter">Creative</text>
+            <text x="5" y="54" text-anchor="start" fill="#10b981" font-size="8" font-family="Inter">Memory</text>
+          </svg>
+        </div>
+      </div>
+      <!-- 参数滑块 -->
+      <div style="background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;padding:1.2rem;flex:1;display:flex;flex-direction:column;gap:0.9rem;box-shadow:0 1px 4px rgba(0,0,0,0.05);">
+        <h3 style="color:#d97706;font-size:0.85rem;margin:0;display:flex;align-items:center;gap:6px;"><span>🎛</span> 参数微调 (Fine-tune)</h3>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#2d3748;margin-bottom:6px;"><span>MLP 共鸣阈值 (Resonance)</span><span style="color:#d97706;font-family:monospace;">0.85</span></div>
+          <div style="height:4px;background:#f1f5f9;border-radius:2px;position:relative;"><div style="width:85%;height:100%;background:#d97706;border-radius:2px;"></div><div style="position:absolute;left:85%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:#fff;border-radius:50%;border:2px solid #d97706;cursor:pointer;"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#2d3748;margin-bottom:6px;"><span>创意发散度 (Creativity)</span><span style="color:#805ad5;font-family:monospace;">0.72</span></div>
+          <div style="height:4px;background:#f1f5f9;border-radius:2px;position:relative;"><div style="width:72%;height:100%;background:linear-gradient(90deg,#6b21a8,#a855f7);border-radius:2px;"></div><div style="position:absolute;left:72%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:#fff;border-radius:50%;border:2px solid #805ad5;cursor:pointer;"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#2d3748;margin-bottom:6px;"><span>推理温度 (Temperature)</span><span style="color:#3182ce;font-family:monospace;">0.68</span></div>
+          <div style="height:4px;background:#f1f5f9;border-radius:2px;position:relative;"><div style="width:68%;height:100%;background:linear-gradient(90deg,#2563eb,#60a5fa);border-radius:2px;"></div><div style="position:absolute;left:68%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:#fff;border-radius:50%;border:2px solid #3182ce;cursor:pointer;"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#2d3748;margin-bottom:6px;"><span>安全拦截严格度 (Safety)</span><span style="color:#e53e3e;font-family:monospace;">High</span></div>
+          <div style="height:4px;background:#f1f5f9;border-radius:2px;position:relative;"><div style="width:100%;height:100%;background:#e53e3e;border-radius:2px;"></div><div style="position:absolute;left:100%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:#fff;border-radius:50%;border:2px solid #e53e3e;cursor:pointer;"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#2d3748;margin-bottom:6px;"><span>记忆留存率 (Memory)</span><span style="color:#10b981;font-family:monospace;">0.90</span></div>
+          <div style="height:4px;background:#f1f5f9;border-radius:2px;position:relative;"><div style="width:90%;height:100%;background:linear-gradient(90deg,#059669,#6ee7b7);border-radius:2px;"></div><div style="position:absolute;left:90%;top:50%;transform:translate(-50%,-50%);width:12px;height:12px;background:#fff;border-radius:50%;border:2px solid #10b981;cursor:pointer;"></div></div>
+        </div>
+        <!-- Interaction Language -->
+        <div style="margin-top:0.2rem;">
+          <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#2d3748;margin-bottom:6px;"><span>默认交互语言 (Language)</span></div>
+          <select style="width:100%;background:#f8fafc;border:1px solid #cbd5e1;color:#d97706;padding:6px;border-radius:4px;font-size:0.75rem;outline:none;cursor:pointer;font-weight:600;">
+            <option value="zh-CN">中文 (zh-CN) - Default</option>
+            <option value="en-US">English (en-US)</option>
+            <option value="ja-JP">日本語 (ja-JP)</option>
+            <option value="ko-KR">한국어 (ko-KR)</option>
+            <option value="auto">Auto Detect</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <div style="display:flex;justify-content:space-between;align-items:center;background:#ffffff;padding:0.7rem 1.5rem;border-radius:8px;border:1px solid #e2e8f0;border-bottom:2px solid #d97706;flex-shrink:0;box-shadow:0 1px 4px rgba(0,0,0,0.04);">
+    <div style="font-size:0.75rem;color:#718096;">
+      TraceID: <span style="color:#3182ce;font-family:monospace;">0xB24A1-F77D</span> &nbsp;|&nbsp; Mode: <span style="color:#d97706;font-family:monospace;">Persona Rules</span>
+    </div>
+    <div style="display:flex;gap:1.5rem;">
+      <span style="font-size:0.75rem;color:#718096;">Last Applied: 3h ago</span>
+      <span style="font-size:0.75rem;color:#d97706;">⚠ Unsaved Changes</span>
+      <span style="font-size:0.75rem;color:#718096;">Aura OS Core Platform</span>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

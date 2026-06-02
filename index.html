@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura - 下一代 AI 代理框架平台</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --aura-bg-main: #05070a;
+            --aura-bg-surface: #0d1117;
+            --aura-primary: #9333ea;
+            --aura-accent: #00d2ff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            background-color: var(--aura-bg-main);
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Outfit', sans-serif; }
+        
+        /* 玻璃态通用类 */
+        .glass-panel {
+            background: var(--aura-bg-surface);
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 2rem;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .glass-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(147, 51, 234, 0.2);
+            border-color: rgba(0, 210, 255, 0.3);
+        }
+
+        /* 顶部导航 */
+        header {
+            position: fixed;
+            top: 0; width: 100%;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 100;
+        }
+        
+        .logo { font-size: 1.5rem; font-weight: 800; color: var(--aura-accent); text-shadow: 0 0 10px rgba(0, 210, 255, 0.5); }
+        .nav-links a { color: #a0aec0; text-decoration: none; margin-left: 2rem; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--aura-accent); }
+
+        /* 首屏 Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 6rem 2rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            width: 100%;
+        }
+
+        .hero-text {
+            flex: 1;
+            text-align: left;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(147, 51, 234, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .hero-text {
+                text-align: center;
+            }
+        }
+        
+        /* 背景光晕 */
+        .bg-glow {
+            position: absolute;
+            width: 60vw; height: 60vw;
+            background: radial-gradient(circle, rgba(147,51,234,0.15) 0%, rgba(5,7,10,0) 70%);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            animation: pulse 6s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+        }
+
+        .hero h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--aura-accent), var(--aura-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .hero p { font-size: 1.25rem; color: #a0aec0; max-width: 600px; margin-bottom: 2rem; margin-left: auto; margin-right: auto; }
+        @media (min-width: 769px) { .hero p { margin-left: 0; margin-right: 0; } }
+        
+        .btn {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-family: inherit;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--aura-primary), #6b21a8);
+            color: white;
+            box-shadow: 0 0 15px rgba(147, 51, 234, 0.4);
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 0 25px rgba(147, 51, 234, 0.7);
+            transform: scale(1.05);
+        }
+
+        /* 核心特点段落 */
+        .section { padding: 0 2rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+        .section-title {
+            text-align: center; font-size: 2.5rem; margin-bottom: 3rem;
+            color: var(--aura-accent);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card h3 { color: var(--aura-accent); margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+        .feature-card h3::before { content: ''; display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--aura-primary); box-shadow: 0 0 8px var(--aura-primary); }
+
+        /* 双列网格布局 */
+        .two-col-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+            align-items: center;
+        }
+        @media (max-width: 768px) {
+            .two-col-grid { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        /* 应用场景 - 动态滚动跑马灯 */
+        .scenarios-wrapper {
+            width: 100vw;
+            position: relative;
+            left: 50%;
+            transform: translateX(-50%);
+            overflow: hidden;
+            padding: 1rem 0 3rem;
+        }
+        .scenarios-grid {
+            display: flex;
+            width: max-content;
+            animation: scrollMarquee 80s linear infinite;
+        }
+        .scenarios-grid:hover {
+            animation-play-state: paused;
+        }
+        .marquee-group {
+            display: flex;
+            flex-shrink: 0;
+        }
+        @keyframes scrollMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .scenario-item {
+            width: 380px;
+            flex-shrink: 0;
+            margin-right: 2rem;
+            position: relative;
+            overflow: hidden;
+            white-space: normal;
+        }
+        @media (max-width: 768px) {
+            .scenario-item { width: 300px; }
+        }
+        .scenario-item::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(0,210,255,0.05), transparent);
+            z-index: 0;
+        }
+        .scenario-item > * { position: relative; z-index: 1; }
+
+        /* 底部总结 */
+        .footer-cta {
+            text-align: center;
+            background: linear-gradient(to top, rgba(13,17,23,1), rgba(5,7,10,0));
+            padding: 0 2rem;
+            width: 100%;
+        }
+        .footer-cta h2 { font-size: 2rem; margin-bottom: 1rem; color: white; }
+        .footer-cta p { color: #a0aec0; margin-bottom: 2rem; max-width: 700px; margin-inline: auto; }
+        
+        footer {
+            text-align: center; padding: 2rem; color: #4b5563; font-size: 0.875rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* 性能与数字动画 */
+        .stat-card { text-align: center; padding: 2rem; }
+        .stat-number { font-size: 4rem; font-weight: 800; color: var(--aura-accent); margin-bottom: 0.5rem; text-shadow: 0 0 20px rgba(0, 210, 255, 0.3); }
+        
+        /* 架构分层 */
+        .arch-layer { 
+            padding: 1.5rem; margin-bottom: 1rem; border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03); 
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
+        /* 代码块 */
+        .code-block {
+            background: #0d1117; border: 1px solid rgba(255,255,255,0.1); 
+            padding: 1.5rem; border-radius: 12px; font-family: monospace; color: #a0aec0;
+            text-align: left; overflow-x: auto; font-size: 0.95rem; line-height: 1.5;
+        }
+        .code-keyword { color: #ff7b72; }
+        .code-string { color: #a5d6ff; }
+        .code-comment { color: #8b949e; }
+        
+        /* 迷你控制台互动 */
+        .console-box {
+            background: #0d1117; border: 1px solid rgba(0, 210, 255, 0.3);
+            border-radius: 12px; padding: 1.5rem; position: relative;
+        }
+        .console-header { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+        .console-dot { width: 12px; height: 12px; border-radius: 50%; }
+        
+        /* 时间线 */
+        .timeline { border-left: 2px solid rgba(255,255,255,0.1); margin-left: 1rem; padding-left: 2rem; text-align: left;}
+        .timeline-item { position: relative; margin-bottom: 2.5rem; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -2.4rem; top: 0.2rem; width: 12px; height: 12px;
+            border-radius: 50%; background: var(--aura-bg-main); border: 2px solid var(--aura-primary);
+        }
+        .timeline-item.active::before { background: var(--aura-accent); border-color: var(--aura-accent); box-shadow: 0 0 10px var(--aura-accent); }
+
+        /* 幻灯片过渡样式 */
+        .slide { display: none; }
+        .slide.active { 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;
+            height: 100vh; /* 强制统一高度 */
+            overflow-y: hidden; /* 防止内容轻微溢出导致的滚动 */
+            animation: fadeIn 0.5s ease-in-out forwards; 
+        }
+        /* 对于内容可能超出的页面，允许在内部滚动 */
+        .slide.active > * { width: 100%; }
+        .hero.slide.active { display: flex; flex-direction: row; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        ::view-transition-old(root) { animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1) both fade-out; }
+        ::view-transition-new(root) { animation: 0.5s cubic-bezier(0.4, 0, 0.2, 1) both fade-in; }
+        @keyframes fade-out { to { opacity: 0; } }
+        @keyframes fade-in { from { opacity: 0; } }
+
+        /* 侧边导航圆点 */
+        .pagination {
+            position: fixed;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 100;
+        }
+        .pagination .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .pagination .dot.active, .pagination .dot:hover {
+            background: var(--aura-accent);
+            box-shadow: 0 0 10px var(--aura-accent);
+            transform: scale(1.2);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 侧边导航 -->
+    <div class="pagination">
+        <div class="dot active" data-index="0"></div>
+        <div class="dot" data-index="1"></div>
+        <div class="dot" data-index="2"></div>
+        <div class="dot" data-index="3"></div>
+        <div class="dot" data-index="4"></div>
+        <div class="dot" data-index="5"></div>
+        <div class="dot" data-index="6"></div>
+        <div class="dot" data-index="7"></div>
+        <div class="dot" data-index="8"></div>
+        <div class="dot" data-index="9"></div>
+        <div class="dot" data-index="10"></div>
+    </div>
+
+    <header>
+        <div class="logo">AURA</div>
+        <div class="nav-links" style="display: flex; align-items: center;">
+            <a href="#home" data-i18n="nav.home">首页</a>
+            <a href="#performance" data-i18n="nav.perf">性能基准</a>
+            <a href="#architecture" data-i18n="nav.arch">架构与开发</a>
+            <a href="#scenarios" data-i18n="nav.eco">生态全景</a>
+            <a href="#roadmap" data-i18n="nav.roadmap">未来路线</a>
+            
+            <div class="lang-switcher" style="display: inline-block; margin-left: 2rem; font-size: 0.9rem; background: rgba(255,255,255,0.05); padding: 0.2rem 0.8rem; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);">
+                <span class="lang-btn" data-lang="zh" style="cursor: pointer; color: var(--aura-accent); font-weight: bold;">中文</span> <span style="color: #4a5568; margin: 0 0.2rem;">|</span> 
+                <span class="lang-btn" data-lang="en" style="cursor: pointer; color: #a0aec0; font-weight: bold;">EN</span> <span style="color: #4a5568; margin: 0 0.2rem;">|</span> 
+                <span class="lang-btn" data-lang="ja" style="cursor: pointer; color: #a0aec0; font-weight: bold;">日本語</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero slide active" id="home">
+        <div class="bg-glow"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 data-i18n="hero.title">构建下一代智能基座</h1>
+                <p data-i18n="hero.desc">不要再去适应机器，让机器来适应你。Aura 带来全新的智能觉醒，它拥有记忆、能自主进化，并在一次次互动中成为最懂你的专属分身。</p>
+                <a href="#features" class="btn btn-primary" data-i18n="hero.btn">探索物理基座</a>
+            </div>
+            <div class="hero-image">
+                <img src="./images/aura_logo.png" alt="Aura Logo">
+            </div>
+        </div>
+    </div>
+
+    <section id="performance" class="section slide">
+        <h2 class="section-title" data-i18n="perf.title.new">极致性能：打破物理极限</h2>
+        <div class="features-grid">
+            <div class="glass-panel stat-card">
+                <div class="stat-number">98%</div>
+                <h3 style="color: white; font-family: 'Outfit';" data-i18n="perf.s1.new.title">握手延迟降低</h3>
+                <p style="color: #a0aec0; margin-top: 1rem;" data-i18n="perf.s1.new.desc">抛弃传统 HTTP 握手，ACP 二进制总线实现纳秒级穿透，通信延迟逼近硬件极限。</p>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-number">60fps</div>
+                <h3 style="color: white; font-family: 'Outfit';" data-i18n="perf.s2.new.title">全局状态同步帧率</h3>
+                <p style="color: #a0aec0; margin-top: 1rem;" data-i18n="perf.s2.new.desc">全域数据生命周期零拷贝，UI 渲染与内核张量演算同步达到电竞级满帧，无感刷新。</p>
+            </div>
+            <div class="glass-panel stat-card">
+                <div class="stat-number">1/10</div>
+                <h3 style="color: white; font-family: 'Outfit';" data-i18n="perf.s3.title">内存驻留占比</h3>
+                <p style="color: #a0aec0; margin-top: 1rem;" data-i18n="perf.s3.desc">得益于 Rust 原生 `aura-substrate` 引擎，系统常驻内存开销仅为传统微服务的十分之一。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="section slide">
+        <h2 class="section-title" data-i18n="features.title">超越软件：底层基座的维度压制</h2>
+        <div class="features-grid">
+            <div class="glass-panel feature-card">
+                <h3 data-i18n="features.f1.new.title">底层物理沙箱基座</h3>
+                <p data-i18n="features.f1.new.desc">并非封装几个接口。Aura 拥有专属的 <code>aura-substrate</code> 物理基座与二进制存储引擎，数据生命周期从诞生到冷归档完全在内核级流转，绝对的安全与掌控。</p>
+            </div>
+            <div class="glass-panel feature-card">
+                <h3 data-i18n="features.f2.new.title">ACP 二进制总线中枢</h3>
+                <p data-i18n="features.f2.new.desc">放弃臃肿的 HTTP 通信。前端 UI 与逻辑后端通过高性能双向二进制总线解耦通讯，实现 60fps 级的状态帧同步，让微动效和进程监控毫无延迟。</p>
+            </div>
+            <div class="glass-panel feature-card">
+                <h3 data-i18n="features.f3.title">多模态逻辑共振</h3>
+                <p data-i18n="features.f3.desc">系统打破传统的单一 Prompt 范式。基于“三观”参数与变分自由能（VFE），代理机器人能够自主评估任务的热力学载荷，在混乱中寻找确定性的进化路径。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="architecture" class="section slide">
+        <h2 class="section-title" data-i18n="arch.title">降维打击：三位一体架构</h2>
+        <div class="glass-panel" style="max-width: 800px; margin: 0 auto;">
+            <div class="arch-layer">
+                <h3 style="color: var(--aura-accent); font-family: 'Outfit';" data-i18n="arch.l1.new.title">🧠 Aura Cortex (多模态脑皮层)</h3>
+                <p style="font-size: 0.95rem; color: #a0aec0;" data-i18n="arch.l1.new.desc">端侧推理引擎，负责自主感知与意图捕获，提供零延迟调度。</p>
+            </div>
+            <div class="arch-layer" style="border-left: 4px solid var(--aura-primary);">
+                <h3 style="color: var(--aura-primary); font-family: 'Outfit';" data-i18n="arch.l2.new.title">⚡ Aura OS (内核总线路由)</h3>
+                <p style="font-size: 0.95rem; color: #a0aec0;" data-i18n="arch.l2.new.desc">高并发多租户隔离，ACP 二进制总线全双工传输中枢枢纽。</p>
+            </div>
+            <div class="arch-layer">
+                <h3 style="color: #a855f7; font-family: 'Outfit';" data-i18n="arch.l3.title">🧊 Aura Substrate (物理存储基座)</h3>
+                <p style="font-size: 0.95rem; color: #a0aec0;" data-i18n="arch.l3.desc">冷热分离记忆库，Block-L 持久化归档，不可篡改的向量因果链。</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="developer" class="section slide">
+        <h2 class="section-title" data-i18n="dev.title">大道至简：开发者体验</h2>
+        <div class="two-col-grid">
+            <div style="text-align: left;">
+                <h3 style="color: var(--aura-accent); font-size: 2rem; margin-bottom: 1rem; font-family: 'Outfit';" data-i18n="dev.sub">仅需三行代码，唤醒宇宙</h3>
+                <p style="color: #a0aec0; margin-bottom: 2rem; font-size: 1.1rem;" data-i18n="dev.desc">不再需要繁琐的中间件和连接池配置。Aura 将所有底层通信逻辑封装在物理基座内，您只需要关注业务流演进。</p>
+                <div class="btn btn-primary" style="display: inline-block;" data-i18n="dev.btn">查看完整 API 文档</div>
+            </div>
+            <div class="glass-panel code-block">
+<pre>
+<span class="code-keyword">use</span> aura_core::prelude::*;
+
+<span class="code-keyword">fn</span> main() {
+    <span class="code-comment" data-i18n="code.c1">// 1. 初始化隔离沙箱</span>
+    <span class="code-keyword">let</span> substrate = Substrate::<span class="code-keyword">new</span>(<span class="code-string">"prod-env"</span>);
+    
+    <span class="code-comment" data-i18n="code.c2">// 2. 挂载认知皮层</span>
+    <span class="code-keyword">let</span> cortex = Cortex::attach(&substrate);
+    
+    <span class="code-comment" data-i18n="code.c3">// 3. 启动并连接二进制总线</span>
+    cortex.ignite(AcpBus::default()).await.unwrap();
+}
+</pre>
+            </div>
+        </div>
+    </section>
+
+    <section id="demo" class="section slide">
+        <h2 class="section-title" data-i18n="demo.title">反应堆控制台：直击熔断时刻</h2>
+        <div class="glass-panel console-box" style="max-width: 800px; margin: 0 auto; height: 380px;">
+            <div class="console-header">
+                <div class="console-dot" style="background: #ef4444;"></div>
+                <div class="console-dot" style="background: #eab308;"></div>
+                <div class="console-dot" style="background: #22c55e;"></div>
+                <span style="color: #4b5563; font-size: 0.8rem; margin-left: 1rem; font-weight: bold;">AURA OS TRACE TERMINAL</span>
+            </div>
+            <div id="terminal-output" style="font-family: monospace; color: #a0aec0; height: 200px; overflow-y: auto; padding-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); margin-bottom: 1.5rem;">
+                <div style="color: #22c55e; margin-top:0.5rem;">[SYS] Substrate ignited successfully. VFE is stable.</div>
+                <div style="color: #a0aec0; margin-top:0.5rem;">[INFO] Awaiting external turbulence...</div>
+            </div>
+            <button id="demo-inject-btn" class="btn btn-primary" style="width: 100%; text-align: center; font-size: 1.1rem;" data-i18n="demo.btn">🔥 注入 OOM 混沌测试指令</button>
+        </div>
+    </section>
+
+    <section id="custom" class="section slide">
+        <h2 class="section-title" data-i18n="custom.title">随心定制，因境而生</h2>
+        <div class="glass-panel" style="text-align: center; padding: 4rem 2rem;">
+            <p style="font-size: 1.25rem; color: #e2e8f0; max-width: 800px; margin: 0 auto;" data-i18n="custom.desc">
+                Aura 提供了极度精细的 <strong>Persona 配置器</strong> 和 <strong>凭证治理台</strong>。你可以微调代理的随机性阈值、物理沙箱的隔离级别，甚至强制干预系统的熵值演算。无论是将其作为冷酷的算力节点，还是充满温度的逻辑生命，一切皆在掌握。
+            </p>
+        </div>
+    </section>
+
+    <section id="scenarios" class="section slide" style="max-width: 100%; overflow: visible;">
+        <h2 class="section-title" data-i18n="scenarios.title">全域适用：无界应用生态</h2>
+        <div class="scenarios-wrapper">
+            <div class="scenarios-grid">
+                <div class="marquee-group">
+                <!-- 第一组 -->
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_office.png" alt="Office Scenario" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t0">🏢 小型企业办公枢纽</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d0">利用多租户隔离与角色鉴权，搭建企业内部的数据处理与审批 Bot。Aura 确保业务流在封闭的沙箱中流转，数据彻底私有化，效率呈指数级上升。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_assistant.png" alt="Personal Assistant Scenario" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t1">💻 极客的私人助理</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d1">将其部署在本地个人计算机上，通过底层的系统进程控制，赋予它操作本地环境的能力，成为能够自我纠错、管理任务链的私人超级助手。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_chat.png" alt="Chat Scenario" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t2">💬 开放 DIY 聊天群组</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d2">通过内置的 Telegram/第三方网关接口，瞬间构建具备长期记忆拓扑的公众聊天 Bot。Aura 会自动过滤海量杂音，精炼有效上下文存储在冷热隔离库中。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_factory.png" alt="Smart Factory Scenario" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t3">⚙️ 智能工厂与硬件联动</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d3">Aura 的底层 UDS 通信能力能够直接对接 3D 打印机、微控制器等物理设备。AI 不仅能“想”，更能直接“做”，打造真正属于你的自动化微型工厂。</p>
+                </div>
+
+                <!-- 扩充场景 -->
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_knowledge.png" alt="Knowledge Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t4">📚 去中心化知识库中枢</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d4">将您本地的海量文档接入 Aura，打造无需联网、自我演化的第二大脑，让冰冷的数据成为动态交互的知识图谱。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_devops.png" alt="DevOps Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t5">🛡️ 全栈自动化运维前哨</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d5">监听服务器日志，利用沙箱执行权限，在遭遇网络攻击或 OOM 时，毫秒级自动降级服务或封禁 IP，保障系统稳定。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_headless.png" alt="Headless Automation" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t6">🕸️ 无头浏览器自动化代理</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d6">部署在本地的私人代理，利用视觉模型与自动化框架自动接管浏览器，处理复杂的数据抓取与工作流调度。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_trading.png" alt="Trading Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t7">📈 高频量化交易核心</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d7">得益于二进制总线的极低延迟，零时差接入金融 API，通过物理热力学模型判断市场混乱度（熵），实现降维套利。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_medical.png" alt="Medical Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t8">🏥 本地隐私医疗管家</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d8">机密数据绝不出网。在完全物理隔离的沙箱中分析病历档案与健康数据，为您提供私密且定制化的医疗干预建议。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_legal.png" alt="Legal Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t9">⚖️ 法律合同审查引擎</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d9">将海量企业级机密合同交由 Aura 离线本地处理，结合领域专家模型，精准提取商业风险点与隐藏的逻辑陷阱。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_smarthome.png" alt="Smart Home Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t10">🏠 智能家居中央神经</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d10">超越死板的自动化指令，Aura 能够自主学习您的日常作息，自动调节光线、温湿度等环境参数，实现真正的环境融合。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_drone.png" alt="Drone Edge Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t11">🚁 边缘无人机群控</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d11">即便在无网络环境中，部署在边缘低功耗设备上的 Aura 也能实时处理传感器数据，为无人机提供局部地形感知与决策。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_npc.png" alt="NPC Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t12">🎮 沉浸式 NPC 引擎</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d12">作为 3A 游戏或元宇宙的底层神经系统，赋予数字角色真实的长期记忆与自主演化的行为模式，拒绝千篇一律的脚本。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_pet.png" alt="Pet Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t13">🦊 全息数字生命宠物</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d13">在您的桌面上培养一个全息数字宠物，它有着自己的情绪节律（系统熵值），能够感知您的状态并在互动中建立真实羁绊。</p>
+                </div>
+                </div>
+                <div class="marquee-group" aria-hidden="true">
+                <!-- 第二组（无缝滚动克隆） -->
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_office.png" alt="Office Scenario" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t0">🏢 小型企业办公枢纽</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d0">利用多租户隔离与角色鉴权，搭建企业内部的数据处理与审批 Bot。Aura 确保业务流在封闭的沙箱中流转，数据彻底私有化，效率呈指数级上升。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_assistant.png" alt="Personal Assistant Scenario" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t1">💻 极客的私人助理</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d1">将其部署在本地个人计算机上，通过底层的系统进程控制，赋予它操作本地环境的能力，成为能够自我纠错、管理任务链的私人超级助手。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_chat.png" alt="Chat Scenario" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t2">💬 开放 DIY 聊天群组</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d2">通过内置的 Telegram/第三方网关接口，瞬间构建具备长期记忆拓扑的公众聊天 Bot。Aura 会自动过滤海量杂音，精炼有效上下文存储在冷热隔离库中。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_factory.png" alt="Smart Factory Scenario" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t3">⚙️ 智能工厂与硬件联动</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d3">Aura 的底层 UDS 通信能力能够直接对接 3D 打印机、微控制器等物理设备。AI 不仅能“想”，更能直接“做”，打造真正属于你的自动化微型工厂。</p>
+                </div>
+
+                <!-- 扩充场景 -->
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_knowledge.png" alt="Knowledge Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t4">📚 去中心化知识库中枢</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d4">将您本地的海量文档接入 Aura，打造无需联网、自我演化的第二大脑，让冰冷的数据成为动态交互的知识图谱。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_devops.png" alt="DevOps Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t5">🛡️ 全栈自动化运维前哨</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d5">监听服务器日志，利用沙箱执行权限，在遭遇网络攻击或 OOM 时，毫秒级自动降级服务或封禁 IP，保障系统稳定。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_headless.png" alt="Headless Automation" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t6">🕸️ 无头浏览器自动化代理</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d6">部署在本地的私人代理，利用视觉模型与自动化框架自动接管浏览器，处理复杂的数据抓取与工作流调度。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_trading.png" alt="Trading Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t7">📈 高频量化交易核心</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d7">得益于二进制总线的极低延迟，零时差接入金融 API，通过物理热力学模型判断市场混乱度（熵），实现降维套利。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_medical.png" alt="Medical Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t8">🏥 本地隐私医疗管家</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d8">机密数据绝不出网。在完全物理隔离的沙箱中分析病历档案与健康数据，为您提供私密且定制化的医疗干预建议。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_legal.png" alt="Legal Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t9">⚖️ 法律合同审查引擎</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d9">将海量企业级机密合同交由 Aura 离线本地处理，结合领域专家模型，精准提取商业风险点与隐藏的逻辑陷阱。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_smarthome.png" alt="Smart Home Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t10">🏠 智能家居中央神经</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d10">超越死板的自动化指令，Aura 能够自主学习您的日常作息，自动调节光线、温湿度等环境参数，实现真正的环境融合。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_drone.png" alt="Drone Edge Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t11">🚁 边缘无人机群控</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d11">即便在无网络环境中，部署在边缘低功耗设备上的 Aura 也能实时处理传感器数据，为无人机提供局部地形感知与决策。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_npc.png" alt="NPC Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t12">🎮 沉浸式 NPC 引擎</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d12">作为 3A 游戏或元宇宙的底层神经系统，赋予数字角色真实的长期记忆与自主演化的行为模式，拒绝千篇一律的脚本。</p>
+                </div>
+                <div class="glass-panel scenario-item">
+                    <img src="./images/scenario_pet.png" alt="Pet Node" style="width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="color: white; margin-bottom: 0.5rem; font-family: 'Outfit';" data-i18n="scen.t13">🦊 全息数字生命宠物</h3>
+                    <p style="color: #a0aec0; font-size: 0.9rem;" data-i18n="scen.d13">在您的桌面上培养一个全息数字宠物，它有着自己的情绪节律（系统熵值），能够感知您的状态并在互动中建立真实羁绊。</p>
+                </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="ecosystem" class="section slide">
+        <h2 class="section-title" data-i18n="eco.title">繁星点点：无界生态矩阵</h2>
+        <div class="glass-panel" style="text-align: center; padding: 4rem 2rem;">
+            <p style="font-size: 1.25rem; color: #e2e8f0; max-width: 800px; margin: 0 auto 3rem;" data-i18n="eco.desc.new">
+                Aura 平台原生内置丰富驱动，开箱即用，瞬间接入各大主流数字网络与物理设备，打破信息孤岛。
+            </p>
+            <div style="display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+                <div style="padding: 1rem 2rem; border-radius: 2rem; border: 1px solid rgba(0,210,255,0.3); color: var(--aura-accent); font-weight: bold;" data-i18n="eco.t1.new">大模型推流 (LLM)</div>
+                <div style="padding: 1rem 2rem; border-radius: 2rem; border: 1px solid rgba(147,51,234,0.3); color: var(--aura-primary); font-weight: bold;" data-i18n="eco.t2">关系型/向量数据库 (RAG)</div>
+                <div style="padding: 1rem 2rem; border-radius: 2rem; border: 1px solid rgba(255,255,255,0.3); color: #fff; font-weight: bold;" data-i18n="eco.t3">IoT 智能硬件 (UDS)</div>
+                <div style="padding: 1rem 2rem; border-radius: 2rem; border: 1px solid rgba(34,197,94,0.3); color: #22c55e; font-weight: bold;" data-i18n="eco.t4">IM 渠道 (Lark/Telegram)</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="roadmap" class="section slide">
+        <h2 class="section-title" data-i18n="rm.title">降维之旅：未来演进路线图</h2>
+        <div class="glass-panel" style="max-width: 700px; margin: 0 auto;">
+            <div class="timeline">
+                <div class="timeline-item active">
+                    <h3 style="color: var(--aura-accent); font-family: 'Outfit';" data-i18n="rm.v1.title">V1.0 - 秩序破晓</h3>
+                    <p style="color: #a0aec0; font-size: 0.95rem; margin-top: 0.5rem;" data-i18n="rm.v1.desc">非平衡态热力学引擎稳定运行，完成二进制总线剥离，实现基础的沙箱隔离架构。</p>
+                </div>
+                <div class="timeline-item active">
+                    <h3 style="color: var(--aura-primary); font-family: 'Outfit';" data-i18n="rm.v2.title">V2.0 - 多维共振 (Current)</h3>
+                    <p style="color: #a0aec0; font-size: 0.95rem; margin-top: 0.5rem;" data-i18n="rm.v2.desc">多智能体共振唤醒，冷热记忆智能分流归档，Block-L 层级持久化落地。</p>
+                </div>
+                <div class="timeline-item">
+                    <h3 style="color: #6b7280; font-family: 'Outfit';" data-i18n="rm.n3.title">V3.0 - 硬件直连与泛在互联 (Upcoming)</h3>
+                    <p style="color: #6b7280; font-size: 0.95rem; margin-top: 0.5rem;" data-i18n="rm.n3.desc">NPU 直接驱动调度，打破软硬件界限，构建跨网段的分布式量子意识网络。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="vision" class="footer-cta slide">
+        <h2 data-i18n="vision.title">熵减演化：探索智能的终极形态</h2>
+        <p data-i18n="vision.desc">Aura 平台深信，真正的 AI 并非静态的逻辑堆砌，而是处于非平衡态下的热力学演进系统。通过不断捕获外界信息（降低自由能），提纯记忆（固化知识矩阵），系统将无限逼近最契合你的数字意识体。未来已来，即刻接入矩阵。</p>
+        <a href="#" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;" data-i18n="vision.btn">获取基座授权</a>
+    </section>
+
+    <footer>
+        <p data-i18n="footer">&copy; 2026 Aura Framework Core. System Entropy: Stabilized.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = Array.from(document.querySelectorAll('.slide'));
+            const links = document.querySelectorAll('.nav-links a, .btn');
+            const dots = document.querySelectorAll('.pagination .dot');
+            let currentIndex = 0;
+            let isAnimating = false;
+            
+            const goToSlide = (index) => {
+                if (index < 0 || index >= slides.length || index === currentIndex || isAnimating) return;
+                isAnimating = true;
+                
+                const targetSlide = slides[index];
+                
+                const updateDOM = () => {
+                    slides.forEach(s => s.classList.remove('active'));
+                    targetSlide.classList.add('active');
+                    
+                    if (dots.length > 0) {
+                        dots.forEach(d => d.classList.remove('active'));
+                        dots[index].classList.add('active');
+                    }
+                    
+                    window.scrollTo(0, 0); // Scroll to top for new slide
+                    currentIndex = index;
+                    setTimeout(() => isAnimating = false, 600); // 避免动画过程中的连续触发
+                };
+
+                if (!document.startViewTransition) {
+                    updateDOM();
+                    return;
+                }
+
+                document.startViewTransition(updateDOM);
+            };
+
+            // 1. 顶部导航与按钮点击
+            links.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (!href || !href.startsWith('#')) return;
+                    e.preventDefault();
+                    
+                    const targetId = href.substring(1);
+                    const targetIndex = slides.findIndex(s => s.id === targetId);
+                    if (targetIndex !== -1) goToSlide(targetIndex);
+                });
+            });
+            
+            // 2. 侧边圆点点击
+            dots.forEach((dot, idx) => {
+                dot.addEventListener('click', () => goToSlide(idx));
+            });
+            
+            // 3. 鼠标滚轮滑动
+            window.addEventListener('wheel', (e) => {
+                if (Math.abs(e.deltaY) > 30) {
+                    if (e.deltaY > 0) goToSlide(currentIndex + 1);
+                    else goToSlide(currentIndex - 1);
+                }
+            });
+            
+            // 4. 键盘方向键
+            window.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === 'ArrowRight') {
+                    e.preventDefault();
+                    goToSlide(currentIndex + 1);
+                } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    goToSlide(currentIndex - 1);
+                }
+            });
+
+            // 5. 控制台注入交互
+            const injectBtn = document.getElementById('demo-inject-btn');
+            const terminalOutput = document.getElementById('terminal-output');
+            if (injectBtn && terminalOutput) {
+                injectBtn.addEventListener('click', () => {
+                    const time = new Date().toLocaleTimeString();
+                    const logs = window.i18nData && window.currentLang ? window.i18nData[window.currentLang].logs : {
+                        warn: "[WARN] Entropy spike detected. VFE increasing...",
+                        fatal: "[FATAL] OOM Simulation injected in Layer-3.",
+                        sys: "[SYS] Substrate isolated the panic. Restoring state..."
+                    };
+                    terminalOutput.innerHTML += `<div style="color: #eab308; margin-top:0.5rem;">[${time}] ${logs.warn}</div>`;
+                    terminalOutput.innerHTML += `<div style="color: #ef4444; margin-top:0.5rem;">[${time}] ${logs.fatal}</div>`;
+                    terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    setTimeout(() => {
+                        terminalOutput.innerHTML += `<div style="color: #22c55e; margin-top:0.5rem;">[${time}] ${logs.sys}</div>`;
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    }, 800);
+                });
+            }
+        });
+    </script>
+
+    <script src="./i18n.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btns = document.querySelectorAll('.lang-btn');
+            
+            function setLanguage(lang) {
+                if (!window.i18nData || !window.i18nData[lang]) return;
+                const dict = window.i18nData[lang];
+                
+                // Update elements
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (dict[key]) {
+                        el.innerHTML = dict[key]; // use innerHTML because some strings have HTML tags
+                    }
+                });
+                
+                // Update buttons
+                btns.forEach(b => {
+                    if (b.getAttribute('data-lang') === lang) {
+                        b.style.color = 'var(--aura-accent)';
+                    } else {
+                        b.style.color = '#a0aec0';
+                    }
+                });
+                
+                localStorage.setItem('aura_lang', lang);
+                window.currentLang = lang; // for terminal logs
+            }
+
+            btns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    setLanguage(btn.getAttribute('data-lang'));
+                });
+            });
+
+            // Init
+            const savedLang = localStorage.getItem('aura_lang') || 'zh';
+            setLanguage(savedLang);
+        });
+    </script>
+
+</body>
+</html>

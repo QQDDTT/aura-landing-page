@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.7.2 移动端：进程与 Bot 协同管理主面板 (DARK)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body { margin: 0; padding: 2rem; background-color: #05070a; color: #ffffff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; }
+    .aura-dark-theme, .aura-dark-theme * { scrollbar-width: thin; scrollbar-color: #4a5568 #1a202c; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-track { background: #1a202c; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb:hover { background: #718096; }
+  </style>
+</head>
+<body>
+<div class="aura-dark-theme">
+<div style="width: 375px; height: 600px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; background-color: #05070a; color: #ffffff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; padding: 1.5rem 1rem; border-radius: 24px; border: 8px solid #1f2937; box-shadow: 0 20px 40px rgba(0,0,0,0.8); display: flex; flex-direction: column; gap: 1rem; margin: 0 auto 2rem;">
+  <!-- Mobile Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(13, 17, 23, 0.7); padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); border-top: 2px solid #3b82f6; flex-shrink: 0;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="color: #3b82f6; font-size: 1.2rem; text-shadow: 0 0 10px #3b82f6;">⚙️</span>
+      <strong style="font-size: 1rem; letter-spacing: 1px;">GOVERNANCE</strong>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; box-shadow: 0 0 8px #3b82f6;"></span>
+      <span style="font-size: 1.2rem; cursor: pointer; color: #9090a0;">☰</span>
+    </div>
+  </div>
+
+  <!-- Left Sidebar (Now stacked): Users Management -->
+  <div style="background: #0d1117; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem;">
+    <h3 style="color: #60a5fa; font-size: 0.85rem; margin: 0; display: flex; align-items: center; justify-content: space-between;">
+      <span>👥 多租户列表</span>
+      <span style="font-size: 0.7rem; background: rgba(59, 130, 246, 0.1); color: #60a5fa; padding: 1px 5px; border-radius: 3px;">2 Active</span>
+    </h3>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="background: rgba(59, 130, 246, 0.05); border: 1px solid rgba(59, 130, 246, 0.2); padding: 8px; border-radius: 8px;">
+        <div style="font-size: 0.85rem; font-weight: bold; color: #60a5fa; margin-bottom: 2px;">admin_nick</div>
+        <div style="font-size: 0.65rem; color: #9090a0;">Manage, Develop</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Core Processes -->
+  <div style="background: #0d1117; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem;">
+    <h4 style="margin: 0; color: #60a5fa; font-size: 0.85rem; font-weight: bold; display: flex; justify-content: space-between;">
+      <span>🖥️ 系统核心进程</span>
+    </h4>
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <!-- aura-inference -->
+      <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(147,51,234,0.06); padding: 8px; border-radius: 6px; border: 1px solid rgba(147,51,234,0.15);">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="width: 8px; height: 8px; border-radius: 50%; background: #9333ea;"></span>
+          <div style="display:flex; flex-direction:column;">
+             <span style="font-size: 0.8rem; font-family: monospace;">aura-inference</span>
+             <span style="font-size: 0.65rem; color: #c084fc;">CPU 18% | Busy</span>
+          </div>
+        </div>
+        <button style="padding: 3px 6px; border-radius: 4px; font-size: 0.65rem; background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #f87171; cursor: pointer;">Restart</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bot Gateway -->
+  <div style="background: #0d1117; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 0.8rem; flex-shrink:0;">
+    <h4 style="margin: 0; color: #c084fc; font-size: 0.85rem; font-weight: bold;">🤖 Bots Gateway</h4>
+    <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); padding: 8px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="display: flex; flex-direction: column; gap: 2px;">
+        <span style="font-size: 0.85rem; font-weight: bold; color: #e2e8f0;">@aura_primary_bot</span>
+        <span style="font-size: 0.65rem; color: #10b981;">Latency: 82ms</span>
+      </div>
+      <span style="background: #10b981; width: 36px; height: 20px; border-radius: 10px; display: inline-block; position: relative; cursor: pointer;">
+        <span style="width: 16px; height: 16px; border-radius: 50%; background: #ffffff; position: absolute; top: 2px; right: 2px;"></span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Mobile Footer -->
+  <div style="display:flex; flex-direction:column; gap:6px; background:rgba(13,17,23,0.7); padding:0.8rem; border-radius:8px; border:1px solid rgba(255,255,255,0.08); border-bottom:2px solid #3b82f6; flex-shrink:0;">
+    <div style="font-size:0.65rem; color:#9090a0;">TraceID: <span style="color:#00d2ff;">0xFA92C</span> | Mode: System</div>
+    <div style="font-size:0.65rem; color:#10b981;">4 Processes | 2 Users</div>
+  </div>
+</div>
+</div>
+</body>
+</html>

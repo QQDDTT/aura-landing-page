@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.4 会话审计与混沌日志池 (Sessions & Audit Logs) (DARK)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; padding:2rem; background-color:#05070a; color:#ffffff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; }
+    .aura-dark-theme, .aura-dark-theme * { scrollbar-width: thin; scrollbar-color: #4a5568 #1a202c; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-track { background: #1a202c; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb:hover { background: #718096; }
+  </style>
+</head>
+<body>
+<div class="aura-dark-theme">
+<div style="width:1200px;height:620px;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;margin:0 auto 2rem;background:#05070a;color:#fff;padding:1.5rem;border-radius:12px;border:1px solid #1f2937;box-shadow:0 10px 30px rgba(0,0,0,0.5);display:flex;flex-direction:column;gap:1rem;">
+  <!-- Header -->
+  <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(13,17,23,0.7);padding:0.85rem 1.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.08);border-top:2px solid #ef4444;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="color:#ef4444;font-size:1.4rem;text-shadow:0 0 10px #ef4444;">🛡️</span>
+      <strong style="font-size:1.1rem;letter-spacing:1px;color:#e0e0e6;">AURA AUDIT TERMINAL</strong>
+      <span style="background:rgba(239,68,68,0.15);color:#f87171;font-size:0.7rem;padding:2px 6px;border-radius:4px;border:1px solid rgba(239,68,68,0.3);">v4.0</span>
+    </div>
+    <div style="display:flex;gap:1rem;align-items:center;">
+      <span style="font-size:0.8rem;color:#9090a0;padding:4px 8px;cursor:pointer;">Core</span>
+      <span style="font-size:0.8rem;color:#ef4444;padding:4px 8px;cursor:pointer;border-bottom:2px solid #ef4444;">Audit</span>
+      <span style="font-size:0.8rem;color:#9090a0;padding:4px 8px;cursor:pointer;">Memory</span>
+      <span style="font-size:0.8rem;color:#9090a0;padding:4px 8px;cursor:pointer;">Persona</span>
+      <span style="font-size:0.8rem;color:#9090a0;padding:4px 8px;cursor:pointer;">Settings</span>
+      <div style="width:1px;height:14px;background:rgba(255,255,255,0.15);margin:0 4px;"></div>
+      <span style="font-size:0.9rem;cursor:pointer;color:#9090a0;">🌐</span>
+      <span style="font-size:0.9rem;cursor:pointer;color:#00d2ff;">🌙</span>
+    </div>
+    <div style="font-size:0.8rem;color:#10b981;display:flex;align-items:center;gap:8px;">
+      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;"></span>
+      KERNEL ONLINE
+    </div>
+  </div>
+  <!-- Main Row -->
+  <div style="display:flex;gap:1rem;flex:1;min-height:0;">
+    <!-- 左：活跃会话列表 -->
+    <div style="width:260px;flex-shrink:0;display:flex;flex-direction:column;gap:1rem;overflow-y:auto;min-height:0;">
+      <div style="background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;gap:0.6rem;">
+        <h3 style="color:#e0e0e6;font-size:0.85rem;margin:0;display:flex;align-items:center;justify-content:space-between;">
+          <span>Active Sessions (活跃会话)</span>
+          <span style="font-size:0.7rem;color:#ef4444;font-family:monospace;">2 Live</span>
+        </h3>
+        <!-- Session 1 -->
+        <div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.85rem;color:#00d2ff;font-weight:bold;">@developer_nick</span>
+            <span style="color:#ef4444;font-size:0.65rem;padding:3px 7px;border:1px solid #ef4444;border-radius:4px;cursor:pointer;">KILL</span>
+          </div>
+          <div style="font-size:0.7rem;color:#9090a0;margin-bottom:4px;">Messages: 42 &nbsp;|&nbsp; VFE: <span style="color:#10b981;">Normal</span></div>
+          <div style="font-size:0.7rem;color:#9090a0;">Duration: 1h 23m &nbsp;|&nbsp; TraceID: <span style="color:#00d2ff;font-family:monospace;">0x9A4F</span></div>
+          <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.04);border-radius:2px;overflow:hidden;">
+            <div style="width:35%;height:100%;background:linear-gradient(90deg,#10b981,#00d2ff);border-radius:2px;"></div>
+          </div>
+        </div>
+        <!-- Session 2 -->
+        <div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.2);border-radius:8px;padding:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-size:0.85rem;color:#e0e0e6;font-weight:bold;">@guest_991</span>
+            <span style="color:#ef4444;font-size:0.65rem;padding:3px 7px;border:1px solid #ef4444;border-radius:4px;cursor:pointer;">KILL</span>
+          </div>
+          <div style="font-size:0.7rem;color:#9090a0;margin-bottom:4px;">Messages: 103 &nbsp;|&nbsp; VFE: <span style="color:#f59e0b;">High</span></div>
+          <div style="font-size:0.7rem;color:#9090a0;">Duration: 3h 51m &nbsp;|&nbsp; TraceID: <span style="color:#00d2ff;font-family:monospace;">0xB91A</span></div>
+          <div style="margin-top:6px;height:3px;background:rgba(255,255,255,0.04);border-radius:2px;overflow:hidden;">
+            <div style="width:78%;height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444);box-shadow:0 0 4px #ef4444;border-radius:2px;"></div>
+          </div>
+        </div>
+        <!-- 会话统计 -->
+        <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:10px;margin-top:4px;">
+          <div style="font-size:0.72rem;color:#9090a0;margin-bottom:6px;font-weight:bold;">今日统计</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;">
+            <div style="text-align:center;"><div style="font-size:1rem;font-weight:bold;color:#00d2ff;">128</div><div style="font-size:0.6rem;color:#4b5563;">总消息</div></div>
+            <div style="text-align:center;"><div style="font-size:1rem;font-weight:bold;color:#10b981;">7</div><div style="font-size:0.6rem;color:#4b5563;">已完成任务</div></div>
+            <div style="text-align:center;"><div style="font-size:1rem;font-weight:bold;color:#f59e0b;">2</div><div style="font-size:0.6rem;color:#4b5563;">WARN 事件</div></div>
+            <div style="text-align:center;"><div style="font-size:1rem;font-weight:bold;color:#ef4444;">1</div><div style="font-size:0.6rem;color:#4b5563;">OOM 拦截</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- 安全事件摘要 -->
+      <div style="background:#0d1117;border:1px solid rgba(239,68,68,0.2);border-radius:12px;padding:1.2rem;flex:1;">
+        <h3 style="color:#ef4444;font-size:0.85rem;margin:0 0 0.7rem 0;display:flex;align-items:center;gap:6px;">⚠ 安全事件摘要</h3>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;padding:6px 8px;background:rgba(239,68,68,0.06);border-radius:6px;border-left:2px solid #ef4444;">
+            <span style="color:#f87171;">OOM 拦截</span><span style="color:#9090a0;font-family:monospace;">×1</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;padding:6px 8px;background:rgba(245,158,11,0.06);border-radius:6px;border-left:2px solid #f59e0b;">
+            <span style="color:#fbbf24;">延迟注入</span><span style="color:#9090a0;font-family:monospace;">×2</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;padding:6px 8px;background:rgba(0,210,255,0.04);border-radius:6px;border-left:2px solid #00d2ff;">
+            <span style="color:#60a5fa;">AUTH 成功</span><span style="color:#9090a0;font-family:monospace;">×12</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.72rem;padding:6px 8px;background:rgba(16,185,129,0.04);border-radius:6px;border-left:2px solid #10b981;">
+            <span style="color:#6ee7b7;">沙箱清洁</span><span style="color:#9090a0;font-family:monospace;">×4</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 中：混沌日志终端 -->
+    <div style="flex:1;background:#000000;border:1px solid rgba(239,68,68,0.25);border-radius:12px;padding:1rem;font-family:'Fira Code',monospace;font-size:0.78rem;line-height:1.6;overflow-y:auto;display:flex;flex-direction:column;gap:0;min-width:0;min-height:0;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(239,68,68,0.15);">
+        <span style="color:#ef4444;font-size:0.78rem;font-weight:bold;">⚡ CHAOS LOG POOL (混沌日志池)</span>
+        <div style="display:flex;gap:0.5rem;">
+          <span style="font-size:0.65rem;color:#9090a0;background:rgba(255,255,255,0.05);padding:2px 7px;border-radius:4px;cursor:pointer;">ALL</span>
+          <span style="font-size:0.65rem;color:#f87171;background:rgba(239,68,68,0.1);padding:2px 7px;border-radius:4px;cursor:pointer;border:1px solid rgba(239,68,68,0.25);">ERROR</span>
+          <span style="font-size:0.65rem;color:#fbbf24;background:rgba(245,158,11,0.1);padding:2px 7px;border-radius:4px;cursor:pointer;">WARN</span>
+        </div>
+      </div>
+      <!-- 日志条目 -->
+      <div style="color:#10b981;">[2026-05-29 21:01:02] [AURA-OS] System kernel started successfully. PID=1.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:01:03] [INFO] ACP message bus initialized. Protocol: Binary v5.0.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:01:05] [INFO] Telegram gateway attached. Bot: @aura_primary_bot.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:02:11] [INFO] Session #0892 opened. user=@developer_nick</div>
+      <div style="color:#f59e0b;">[2026-05-29 21:03:44] [WARN] Chaos Monkey injected latency +100ms to Gemini API endpoint.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:04:01] [INFO] Skill execution: google_search — sandbox PID=8812 spawned.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:04:02] [INFO] Anti-SSRF: request to 192.168.x.x blocked. LAN access denied.</div>
+      <div style="color:#f59e0b;">[2026-05-29 21:04:03] [WARN] Sandbox PID=8812: network policy violation intercepted.</div>
+      <div style="color:#ef4444;">[2026-05-29 21:05:17] [FATAL] OOM threshold exceeded. Process PID=8821 terminated by Sandbox guard.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:05:18] [INFO] tmpfs sandbox layer unmounted. No residual data. Clean exit.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:06:32] [INFO] AuraTaskRecord #T-0445: state → is_awake_inference=true.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:06:33] [INFO] AuraTaskRecord #T-0445: state → is_executed_inference=true.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:06:34] [INFO] AuraTaskRecord #T-0445: state → is_authorized=true.</div>
+      <div style="color:#10b981;">[2026-05-29 21:06:35] [INFO] AuraTaskRecord #T-0445: state → is_executed=true. ✓ COMPLETE</div>
+      <div style="color:#9090a0;">[2026-05-29 21:08:00] [INFO] Session #0893 opened. user=@guest_991. VFE baseline: 0.62 (High).</div>
+      <div style="color:#f59e0b;">[2026-05-29 21:09:15] [WARN] VFE entropy spike: 0.62 → 0.91. Throttling inference rate.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:10:44] [INFO] Distill phase triggered for Session #0891. Fisher fixation: 91.2%.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:11:30] [INFO] Cold archive: Session #0891 (234 turns) → Block-L sealed.</div>
+      <div style="color:#9090a0;">[2026-05-29 21:12:48] [INFO] AUTH @developer_nick: token verified. Privilege: Develop.</div>
+      <div style="color:#10b981;">[2026-05-29 21:13:02] [AURA-OS] All subsystems nominal. Entropy: 0.38 (Stable) ✓</div>
+      <div style="display:flex;align-items:center;gap:6px;margin-top:8px;color:#10b981;">
+        <span>root@aura:~#</span> <span style="display:inline-block;width:6px;height:13px;background:#10b981;animation:blink 1s step-end infinite;"></span>
+      </div>
+    </div>
+    <!-- 右：日志过滤 + 操作面板 -->
+    <div style="width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:1rem;overflow-y:auto;min-height:0;">
+      <!-- 日志级别过滤 -->
+      <div style="background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;">
+        <h3 style="color:#9090a0;font-size:0.85rem;margin:0 0 0.8rem 0;">🔍 过滤与搜索</h3>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;">
+          <input type="text" placeholder="关键词搜索 (TraceID...)" style="width:100%;box-sizing:border-box;padding:7px 10px;background:rgba(5,7,10,0.8);border:1px solid rgba(255,255,255,0.1);border-radius:6px;color:#e0e0e6;font-size:0.75rem;outline:none;font-family:monospace;">
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:#9090a0;">
+            <input type="checkbox" id="cb-error" checked style="accent-color:#ef4444;">
+            <label for="cb-error" style="color:#f87171;cursor:pointer;">ERROR / FATAL</label>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:#9090a0;">
+            <input type="checkbox" id="cb-warn" checked style="accent-color:#f59e0b;">
+            <label for="cb-warn" style="color:#fbbf24;cursor:pointer;">WARN</label>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:0.75rem;color:#9090a0;">
+            <input type="checkbox" id="cb-info" checked style="accent-color:#00d2ff;">
+            <label for="cb-info" style="color:#9090a0;cursor:pointer;">INFO / DEBUG</label>
+          </div>
+        </div>
+        <button style="width:100%;margin-top:0.8rem;padding:7px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.25);color:#f87171;border-radius:6px;font-size:0.75rem;cursor:pointer;">⬇ 导出日志 (Export)</button>
+      </div>
+      <!-- 快捷熔断操作 -->
+      <div style="background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;flex:1;">
+        <h3 style="color:#ef4444;font-size:0.85rem;margin:0 0 0.8rem 0;">⚡ 强制熔断操作</h3>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <button style="width:100%;padding:8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:8px;font-size:0.78rem;cursor:pointer;text-align:left;">🛑 KILL @developer_nick</button>
+          <button style="width:100%;padding:8px;background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#f87171;border-radius:8px;font-size:0.78rem;cursor:pointer;text-align:left;">🛑 KILL @guest_991</button>
+          <button style="width:100%;padding:8px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);color:#fbbf24;border-radius:8px;font-size:0.78rem;cursor:pointer;text-align:left;">⚠ 全局限速 (Rate Limit)</button>
+          <button style="width:100%;padding:8px;background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.1);color:#9090a0;border-radius:8px;font-size:0.78rem;cursor:pointer;text-align:left;">🔄 重启 ACP 总线</button>
+        </div>
+        <div style="margin-top:0.8rem;padding:8px;background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.15);border-radius:6px;font-size:0.7rem;color:#6ee7b7;">
+          ✅ 沙箱隔离正常<br>
+          <span style="color:#4b5563;">tmpfs 已清洁 · ACS Active</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(13,17,23,0.7);padding:0.7rem 1.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.08);border-bottom:2px solid #ef4444;flex-shrink:0;">
+    <div style="font-size:0.75rem;color:#9090a0;">
+      TraceID: <span style="color:#00d2ff;font-family:monospace;">0x9A4F2-E93C</span> &nbsp;|&nbsp; Mode: <span style="color:#ef4444;font-family:monospace;">Audit Logs</span>
+    </div>
+    <div style="display:flex;gap:1.5rem;">
+      <span style="font-size:0.75rem;color:#ef4444;">1 FATAL today</span>
+      <span style="font-size:0.75rem;color:#f59e0b;">2 WARN today</span>
+      <span style="font-size:0.75rem;color:#9090a0;">Uptime: 142h 13m</span>
+      <span style="font-size:0.75rem;color:#9090a0;">Aura OS Core Platform</span>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

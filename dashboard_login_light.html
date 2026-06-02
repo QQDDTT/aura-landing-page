@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 管理员认证与协同网关 (LIGHT)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    .mock-dash { display: flex; flex-direction: column; gap: 1.5rem; }
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    body {
+      margin: 0;
+      padding: 2rem;
+      background-color: #3182ce;
+      color: #2d3748;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    }
+</style>
+</head>
+<body>
+<div class="aura-light-theme">
+  <div class="login-canvas-wrapper" style="width: 1200px; height: 620px; box-sizing: border-box; overflow: hidden; display: flex; justify-content: center; align-items: center; margin-left: auto; margin-right: auto; background-color: #3182ce; position: relative;">
+  <div class="mock-dash" style="background-color: #3182ce; color: #2d3748; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; padding: 3rem 2rem; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 20px 40px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 520px; position: relative; overflow: hidden; max-width: 480px; margin: 2rem auto;">
+  <!-- 背景量子微弱辉光 -->
+  <div style="position: absolute; top: -10%; left: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(128, 90, 213, 0.1) 0%, rgba(0,0,0,0) 70%); pointer-events: none;"></div>
+  <div style="position: absolute; bottom: -10%; right: -10%; width: 50%; height: 50%; background: radial-gradient(circle, rgba(49, 130, 206, 0.08) 0%, rgba(0,0,0,0) 70%); pointer-events: none;"></div>
+  <!-- Header -->
+  <div style="text-align: center; margin-bottom: 2rem; z-index: 2;">
+    <div style="font-size: 2.5rem; text-shadow: 0 0 15px rgba(128, 90, 213, 0.2); margin-bottom: 0.5rem;">🌌</div>
+    <h2 style="font-size: 1.5rem; letter-spacing: 2px; font-weight: bold; margin: 0; color: #2d3748;">AURA SYSTEM PORTAL</h2>
+    <p style="color: #718096; font-size: 0.8rem; margin: 0.5rem 0 0 0;">接入多租户协同、进程守护与审计网关 [Manage 权限]</p>
+  </div>
+  <!-- Form Card -->
+  <div style="width: 100%; box-sizing: border-box; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(20px) saturate(180%); border: 1px solid #cbd5e1; border-radius: 12px; padding: 2rem; z-index: 2;">
+    <!-- Tabs -->
+    <div style="display: flex; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.8rem; margin-bottom: 1.5rem;">
+      <span style="flex: 1; text-align: center; font-size: 0.95rem; font-weight: bold; color: #3182ce; border-bottom: 2px solid #3182ce; padding-bottom: 0.6rem; cursor: pointer;">管理员登录 (Manager Sign In)</span>
+    </div>
+    <!-- Inputs -->
+    <div style="display: flex; flex-direction: column; gap: 1.2rem;">
+      <div>
+        <label style="display: block; color: #718096; font-size: 0.75rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Manager Identifier (管理员用户名)</label>
+        <input type="text" value="admin_nick" placeholder="输入管理员用户名" style="width: 100%; box-sizing: border-box; padding: 12px 14px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; color: #000000; font-size: 0.85rem; outline: none;">
+      </div>
+      <div>
+        <label style="display: block; color: #718096; font-size: 0.75rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Access Key (访问密码)</label>
+        <input type="password" value="••••••••••••" placeholder="输入安全密匙" style="width: 100%; box-sizing: border-box; padding: 12px 14px; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; color: #000000; font-size: 0.85rem; outline: none;">
+      </div>
+      <!-- Entropy Indicator -->
+      <div style="margin-top: -0.5rem; display: flex; flex-direction: column; gap: 4px;">
+        <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #718096;">
+          <span>安全自由能 (VFE Entropy)</span>
+          <span style="color: #3182ce;">0.98 (Secure)</span>
+        </div>
+        <div style="height: 3px; background: #e2e8f0; border-radius: 2px; overflow: hidden; position: relative;">
+          <div style="width: 98%; height: 100%; background: linear-gradient(90deg, #805ad5, #3182ce); border-radius: 2px; box-shadow: 0 0 6px #3182ce;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Actions -->
+    <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.5rem;">
+      <button style="width: 100%; padding: 12px; border-radius: 8px; font-size: 0.9rem; color: #3182ce; background: rgba(49,130,206,0.1); border: 1px solid rgba(49,130,206,0.3); cursor: pointer; font-weight: bold; box-shadow: 0 4px 15px rgba(128, 90, 213, 0.2);">
+        进入管理员控制台 (Dashboard Authorization)
+      </button>
+    </div>
+  </div>
+  <!-- Footer -->
+  <div style="margin-top: 2rem; font-size: 0.7rem; color: #718096; text-align: center; z-index: 2;">
+    <span>ACS Sandbox Active Node &nbsp;|&nbsp; TraceID: <span style="color: #3182ce; font-family: monospace;">0xFA7E2-E93C</span></span>
+  </div>
+</div>
+  </div>
+</div>
+</body>
+</html>

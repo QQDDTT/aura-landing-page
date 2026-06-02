@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.5.2 弹窗：注入新凭证表单 (Injection Form Modal) (LIGHT)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>.mock-dash { display: flex; flex-direction: column; gap: 1.5rem; }
+  .mock-nav { display: flex; gap: 1rem; align-items: center; }
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  .mock-mobile-btn { display: none; font-size: 1.2rem; cursor: pointer; color: #4a5568; }
+  .mock-flex-row { display: flex; gap: 1.5rem; align-items: stretch; flex-wrap: wrap; }
+  .mock-footer { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 0.8rem 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; border-bottom: 2px solid #3182ce; margin-top: 0.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  @media (max-width: 768px) {
+    .mock-nav { display: none; }
+    .mock-mobile-btn { display: block; }
+    .mock-flex-row { flex-direction: column; }
+    .mock-footer { font-size: 0.65rem; flex-direction: column; gap: 8px; padding: 10px; align-items: flex-start; }
+  }</style>
+  <style>
+    body {
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      margin: 0;
+      padding: 2rem;
+      background-color: #3182ce;
+      color: #2d3748;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    }
+</style>
+</head>
+<body>
+<div class="aura-light-theme">
+  <div style="margin-top: 1rem; margin-bottom: 2rem; padding: 1.5rem; background: #faf9f8; border: 1px solid #3182ce; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); max-width: 450px;">
+    <h3 style="color: #3182ce; margin: 0 0 1.2rem 0; font-size: 1.1rem; display: flex; align-items: center; gap: 8px;">
+        <span style="filter: drop-shadow(0 0 5px #3182ce);">✈️</span> 注入新 Telegram 实例
+    </h3>
+    <div style="display: flex; flex-direction: column; gap: 1rem;">
+        <div>
+            <label style="display: block; color: #718096; font-size: 0.8rem; margin-bottom: 4px;">Bot Username (实例名称)</label>
+            <input type="text" value="@aura_test_bot" style="width: 100%; box-sizing: border-box; padding: 8px 12px; background: rgba(0, 0, 0, 0.02); border: 1px solid #e2e8f0; border-radius: 6px; color: #2d3748; font-size: 0.85rem; outline: none;">
+        </div>
+        <div>
+            <label style="display: block; color: #718096; font-size: 0.8rem; margin-bottom: 4px;">Bot Token (安全凭证)</label>
+            <input type="password" value="123456789:ABCDEFGHIJKLMNOPQRSTUVWXYZ" style="width: 100%; box-sizing: border-box; padding: 8px 12px; background: rgba(0, 0, 0, 0.02); border: 1px solid #e2e8f0; border-radius: 6px; color: #2d3748; font-size: 0.85rem; outline: none;">
+        </div>
+        <div>
+            <label style="display: block; color: #718096; font-size: 0.8rem; margin-bottom: 4px;">Rate Limit (速率限制)</label>
+            <input type="range" min="1" max="100" value="30" style="width: 100%;">
+            <div style="font-size: 0.7rem; color: #3182ce; text-align: right; margin-top: 4px;">30 req/min</div>
+        </div>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid #e2e8f0;">
+        <span style="padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; color: #38a169; border: 1px solid #38a169; background: rgba(56, 161, 105, 0.1); cursor: pointer;">测试连接 (Test)</span>
+        <div style="display: flex; gap: 8px;">
+            <span style="padding: 6px 16px; border-radius: 6px; font-size: 0.85rem; color: #718096; cursor: pointer;">取消</span>
+            <span style="padding: 6px 16px; border-radius: 6px; font-size: 0.85rem; color: #3182ce; background: rgba(49,130,206,0.1); border: 1px solid rgba(49,130,206,0.3); cursor: pointer; font-weight: bold; box-shadow: 0 0 10px rgba(49, 130, 206, 0.5);">注入 (Inject)</span>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

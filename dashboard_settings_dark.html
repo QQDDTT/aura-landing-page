@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.5 凭证与端点治理台 (Secrets & Settings) (DARK)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body { margin:0; padding:2rem; background-color:#05070a; color:#ffffff; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; }
+    .aura-dark-theme, .aura-dark-theme * { scrollbar-width: thin; scrollbar-color: #4a5568 #1a202c; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-track { background: #1a202c; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb:hover { background: #718096; }
+  </style>
+</head>
+<body>
+<div class="aura-dark-theme">
+<div style="width:1200px;height:620px;box-sizing:border-box;overflow-y:auto;overflow-x:hidden;margin:0 auto 2rem;background:#05070a;color:#fff;padding:1.5rem;border-radius:12px;border:1px solid #1f2937;box-shadow:0 10px 30px rgba(0,0,0,0.5);display:flex;flex-direction:column;gap:1rem;">
+  <!-- Header -->
+  <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(13,17,23,0.7);padding:0.85rem 1.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.08);border-top:2px solid #9333ea;flex-shrink:0;">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="color:#9333ea;font-size:1.4rem;text-shadow:0 0 10px #9333ea;">⚙️</span>
+      <strong style="font-size:1.1rem;letter-spacing:1px;color:#e0e0e6;">AURA SETTINGS</strong>
+      <span style="background:rgba(147,51,234,0.15);color:#c084fc;font-size:0.7rem;padding:2px 6px;border-radius:4px;border:1px solid rgba(147,51,234,0.3);">v4.0</span>
+    </div>
+    <div style="display:flex;gap:1rem;align-items:center;">
+      <span style="font-size:0.8rem;color:#9090a0;padding:4px 8px;cursor:pointer;">Core</span>
+      <span style="font-size:0.8rem;color:#9090a0;padding:4px 8px;cursor:pointer;">Audit</span>
+      <span style="font-size:0.8rem;color:#9090a0;padding:4px 8px;cursor:pointer;">Memory</span>
+      <span style="font-size:0.8rem;color:#9090a0;padding:4px 8px;cursor:pointer;">Persona</span>
+      <span style="font-size:0.8rem;color:#9333ea;padding:4px 8px;cursor:pointer;border-bottom:2px solid #9333ea;">Settings</span>
+      <div style="width:1px;height:14px;background:rgba(255,255,255,0.15);margin:0 4px;"></div>
+      <span style="font-size:0.9rem;cursor:pointer;color:#9090a0;">🌐</span>
+      <span style="font-size:0.9rem;cursor:pointer;color:#00d2ff;">🌙</span>
+    </div>
+    <div style="font-size:0.8rem;color:#10b981;display:flex;align-items:center;gap:8px;">
+      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;"></span>
+      KERNEL ONLINE
+    </div>
+  </div>
+  <!-- Main Row -->
+  <div style="display:flex;gap:1rem;flex:1;min-height:0;">
+    <!-- 左：交互层大模型 (Interaction LLMs) -->
+    <div style="flex:1;background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;">
+      <h3 style="color:#00d2ff;font-size:0.85rem;margin:0;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:6px;"><span style="filter:drop-shadow(0 0 5px #00d2ff);">💬</span> 交互层模型 (Interaction LLMs)</div>
+        <span style="font-size:0.7rem;background:rgba(0,210,255,0.1);color:#00d2ff;padding:2px 6px;border-radius:4px;border:1px solid rgba(0,210,255,0.2);">2 Ready</span>
+      </h3>
+      <!-- Scrollable Container Start -->
+      <div style="flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:0.8rem;padding-right:4px;">
+        <!-- Model 1 -->
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(0,210,255,0.05);padding:10px 12px;border-radius:8px;border:1px solid rgba(0,210,255,0.15);flex-shrink:0;">
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <strong style="font-size:0.85rem;color:#e0e0e6;">gemini-2.5-flash</strong>
+            <span style="font-size:0.72rem;color:#9090a0;font-family:monospace;">Key: AIzaSyB...xyz · 1M Context</span>
+            <span style="font-size:0.68rem;color:#10b981;">● Active · Latency: 120ms</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:0.7rem;color:#9090a0;cursor:pointer;background:rgba(255,255,255,0.05);padding:3px 7px;border-radius:4px;">Edit</span>
+            <div style="width:32px;height:16px;background:#10b981;border-radius:8px;position:relative;cursor:pointer;">
+              <div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Model 2 -->
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <strong style="font-size:0.85rem;color:#9090a0;">gemini-1.5-flash-8b</strong>
+            <span style="font-size:0.72rem;color:#9090a0;font-family:monospace;">Key: AIzaSyC...abc · 1M Context</span>
+            <span style="font-size:0.68rem;color:#f59e0b;">● Fallback · Latency: 80ms</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:0.7rem;color:#9090a0;cursor:pointer;background:rgba(255,255,255,0.05);padding:3px 7px;border-radius:4px;">Edit</span>
+            <div style="width:32px;height:16px;background:#10b981;border-radius:8px;position:relative;cursor:pointer;">
+              <div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px;"></div>
+            </div>
+          </div>
+        </div>
+        <button style="width:100%;padding:8px;background:transparent;border:1px dashed rgba(0,210,255,0.2);color:#4b5563;border-radius:8px;font-size:0.78rem;cursor:pointer;flex-shrink:0;">+ 注入新模型 (Inject Endpoint)</button>
+      </div>
+      <!-- 端点健康探针 -->
+      <div style="background:rgba(255,255,255,0.02);border-radius:8px;padding:0.8rem;border:1px solid rgba(255,255,255,0.05);">
+        <div style="font-size:0.72rem;color:#9090a0;margin-bottom:0.5rem;font-weight:bold;">端点健康度探针 (Health Probe)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+          <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:6px;padding:7px;text-align:center;">
+            <div style="font-size:0.65rem;color:#4b5563;margin-bottom:2px;">gemini-2.5-flash</div>
+            <div style="font-size:0.8rem;font-weight:bold;color:#10b981;">✅ 120ms</div>
+          </div>
+          <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:6px;padding:7px;text-align:center;">
+            <div style="font-size:0.65rem;color:#4b5563;margin-bottom:2px;">gemini-1.5-flash-8b</div>
+            <div style="font-size:0.8rem;font-weight:bold;color:#10b981;">✅ 80ms</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 中：推理层大模型 (Inference LLMs) -->
+    <div style="flex:1;background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;">
+      <h3 style="color:#9333ea;font-size:0.85rem;margin:0;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:6px;"><span style="filter:drop-shadow(0 0 5px #9333ea);">🧠</span> 推理层模型 (Inference LLMs)</div>
+        <span style="font-size:0.7rem;background:rgba(147,51,234,0.1);color:#c084fc;padding:2px 6px;border-radius:4px;border:1px solid rgba(147,51,234,0.2);">1 Ready</span>
+      </h3>
+      <!-- Scrollable Container Start -->
+      <div style="flex:1;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:0.8rem;padding-right:4px;">
+        <!-- Model 1 -->
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(147,51,234,0.06);padding:10px 12px;border-radius:8px;border:1px solid rgba(147,51,234,0.15);flex-shrink:0;">
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <strong style="font-size:0.85rem;color:#e0e0e6;">gemini-2.0-pro</strong>
+            <span style="font-size:0.72rem;color:#9090a0;font-family:monospace;">Key: AIzaSyX...def · 2M Context</span>
+            <span style="font-size:0.68rem;color:#10b981;">● Active · Latency: 340ms</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:0.7rem;color:#9090a0;cursor:pointer;background:rgba(255,255,255,0.05);padding:3px 7px;border-radius:4px;">Edit</span>
+            <div style="width:32px;height:16px;background:#10b981;border-radius:8px;position:relative;cursor:pointer;">
+              <div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- Model 2: Disabled -->
+        <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);padding:10px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);flex-shrink:0;">
+          <div style="display:flex;flex-direction:column;gap:3px;">
+            <strong style="font-size:0.85rem;color:#9090a0;">gemini-2.0-flash-thinking</strong>
+            <span style="font-size:0.72rem;color:#4b5563;font-family:monospace;">Key: (Not Configured)</span>
+            <span style="font-size:0.68rem;color:#4b5563;">○ Disabled</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:0.7rem;color:#9090a0;cursor:pointer;background:rgba(255,255,255,0.05);padding:3px 7px;border-radius:4px;">Edit</span>
+            <div style="width:32px;height:16px;background:#374151;border-radius:8px;position:relative;cursor:pointer;">
+              <div style="width:12px;height:12px;background:#6b7280;border-radius:50%;position:absolute;left:2px;top:2px;"></div>
+            </div>
+          </div>
+        </div>
+        <button style="width:100%;padding:8px;background:transparent;border:1px dashed rgba(147,51,234,0.2);color:#4b5563;border-radius:8px;font-size:0.78rem;cursor:pointer;flex-shrink:0;">+ 注入新模型 (Inject Endpoint)</button>
+      </div>
+      <!-- 端点健康探针 -->
+      <div style="background:rgba(255,255,255,0.02);border-radius:8px;padding:0.8rem;border:1px solid rgba(255,255,255,0.05);">
+        <div style="font-size:0.72rem;color:#9090a0;margin-bottom:0.5rem;font-weight:bold;">端点健康度探针 (Health Probe)</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
+          <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);border-radius:6px;padding:7px;text-align:center;">
+            <div style="font-size:0.65rem;color:#4b5563;margin-bottom:2px;">gemini-2.0-pro</div>
+            <div style="font-size:0.8rem;font-weight:bold;color:#10b981;">✅ 340ms</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-radius:6px;padding:7px;text-align:center;">
+            <div style="font-size:0.65rem;color:#4b5563;margin-bottom:2px;">gemini-2.0-flash-thinking</div>
+            <div style="font-size:0.8rem;font-weight:bold;color:#4b5563;">-</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 右：全局设置 -->
+    <div style="width:240px;flex-shrink:0;background:#0d1117;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;">
+      <h3 style="color:#9090a0;font-size:0.85rem;margin:0;">🔧 全局系统配置</h3>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;">
+        <!-- VFE 阈值 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;">
+          <span style="color:#9090a0;">VFE 警报阈值</span>
+          <span style="color:#f59e0b;font-family:monospace;font-size:0.75rem;">0.80</span>
+        </div>
+        <div style="height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;"><div style="width:80%;height:100%;background:linear-gradient(90deg,#9333ea,#f59e0b);border-radius:2px;"></div></div>
+        <!-- 日志保留 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;">
+          <span style="color:#9090a0;">日志保留天数</span>
+          <span style="color:#00d2ff;font-family:monospace;font-size:0.75rem;">30 天</span>
+        </div>
+        <!-- 自动精炼 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;">
+          <span style="color:#9090a0;">自动精炼 (Distill)</span>
+          <div style="width:28px;height:14px;background:#10b981;border-radius:7px;position:relative;cursor:pointer;">
+            <div style="width:10px;height:10px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px;"></div>
+          </div>
+        </div>
+        <!-- ACS 沙箱 -->
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;">
+          <span style="color:#9090a0;">ACS 物理沙箱</span>
+          <div style="width:28px;height:14px;background:#10b981;border-radius:7px;position:relative;cursor:pointer;">
+            <div style="width:10px;height:10px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px;"></div>
+          </div>
+        </div>
+        <!-- Chaos Monkey -->
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;">
+          <span style="color:#9090a0;">混沌猴 (Chaos Monkey)</span>
+          <div style="width:28px;height:14px;background:#374151;border-radius:7px;position:relative;cursor:pointer;">
+            <div style="width:10px;height:10px;background:#6b7280;border-radius:50%;position:absolute;left:2px;top:2px;"></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:auto;padding:8px;background:rgba(147,51,234,0.06);border:1px solid rgba(147,51,234,0.15);border-radius:6px;font-size:0.7rem;color:#c084fc;">
+        系统版本: <span style="color:#9333ea;font-family:monospace;">Aura OS v4.0.0</span><br>
+        <span style="color:#4b5563;">Build: 2026-05-29 · Rust 1.79</span>
+      </div>
+      <button style="width:100%;padding:7px;background:linear-gradient(135deg,#7c3aed,#9333ea);border:none;color:#fff;border-radius:6px;font-size:0.78rem;cursor:pointer;font-weight:bold;">💾 保存全局配置</button>
+    </div>
+  </div>
+  <!-- Footer -->
+  <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(13,17,23,0.7);padding:0.7rem 1.5rem;border-radius:8px;border:1px solid rgba(255,255,255,0.08);border-bottom:2px solid #9333ea;flex-shrink:0;">
+    <div style="font-size:0.75rem;color:#9090a0;">
+      TraceID: <span style="color:#00d2ff;font-family:monospace;">0x9A4F2-E93C</span> &nbsp;|&nbsp; Mode: <span style="color:#9333ea;font-family:monospace;">Settings</span>
+    </div>
+    <div style="display:flex;gap:1.5rem;">
+      <span style="font-size:0.75rem;color:#10b981;">3 Active Endpoints</span>
+      <span style="font-size:0.75rem;color:#9090a0;">Uptime: 142h 13m</span>
+      <span style="font-size:0.75rem;color:#9090a0;">Aura OS Core Platform</span>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

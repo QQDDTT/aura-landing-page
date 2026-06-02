@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.5.3 悬浮框：端点健康度探针 (Health Probe Tooltip) (LIGHT)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>.mock-dash { display: flex; flex-direction: column; gap: 1.5rem; }
+  .mock-nav { display: flex; gap: 1rem; align-items: center; }
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  .mock-mobile-btn { display: none; font-size: 1.2rem; cursor: pointer; color: #4a5568; }
+  .mock-flex-row { display: flex; gap: 1.5rem; align-items: stretch; flex-wrap: wrap; }
+  .mock-footer { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 0.8rem 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; border-bottom: 2px solid #3182ce; margin-top: 0.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  @media (max-width: 768px) {
+    .mock-nav { display: none; }
+    .mock-mobile-btn { display: block; }
+    .mock-flex-row { flex-direction: column; }
+    .mock-footer { font-size: 0.65rem; flex-direction: column; gap: 8px; padding: 10px; align-items: flex-start; }
+  }</style>
+  <style>
+    body {
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      margin: 0;
+      padding: 2rem;
+      background-color: #faf9f8;
+      color: #2d3748;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    }
+</style>
+</head>
+<body>
+<div class="aura-light-theme">
+  <div style="margin-top: 1rem; margin-bottom: 2rem; padding: 1rem; background: #e2e8f0; border: 1px solid rgba(56, 161, 105, 0.3); border-radius: 8px; box-shadow: 0 4px 12px #e2e8f0; max-width: 250px; position: relative;">
+    <div style="position: absolute; bottom: -5px; left: 20px; width: 10px; height: 10px; background: #e2e8f0; border-bottom: 1px solid rgba(56, 161, 105, 0.3); border-right: 1px solid rgba(56, 161, 105, 0.3); transform: rotate(45deg);"></div>
+    <h4 style="margin: 0 0 8px 0; color: #2d3748; font-size: 0.85rem; display: flex; align-items: center; gap: 6px;">
+        <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38a169; box-shadow: 0 0 8px #38a169;"></span>
+        探针报告 (Probe Status)
+    </h4>
+    <div style="color: #718096; font-size: 0.75rem; display: flex; flex-direction: column; gap: 6px; font-family: monospace;">
+        <div style="display: flex; justify-content: space-between;"><span>Latency:</span> <span style="color: #38a169;">124ms</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>Packet Loss:</span> <span style="color: #2d3748;">0.00%</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>24h Usage:</span> <span style="color: #3182ce;">1.2M tokens</span></div>
+    </div>
+</div>
+</div>
+</body>
+</html>

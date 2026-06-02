@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.2.3 弹窗：向量因果图节点的说明 (DARK)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>.mock-dash { display: flex; flex-direction: column; gap: 1.5rem; }
+  .mock-nav { display: flex; gap: 1rem; align-items: center; }
+    .aura-dark-theme, .aura-dark-theme * { scrollbar-width: thin; scrollbar-color: #4a5568 #1a202c; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-track { background: #1a202c; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb:hover { background: #718096; }
+  .mock-mobile-btn { display: none; font-size: 1.2rem; cursor: pointer; color: #9090a0; }
+  .mock-flex-row { display: flex; gap: 1.5rem; align-items: stretch; flex-wrap: wrap; }
+  .mock-footer { display: flex; justify-content: space-between; align-items: center; background: rgba(13, 17, 23, 0.7); padding: 0.8rem 1.5rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); border-bottom: 2px solid #00d2ff; margin-top: 0.5rem; }
+  @media (max-width: 768px) {
+    .mock-nav { display: none; }
+    .mock-mobile-btn { display: block; }
+    .mock-flex-row { flex-direction: column; }
+    .mock-footer { font-size: 0.65rem; flex-direction: column; gap: 8px; padding: 10px; align-items: flex-start; }
+  }</style>
+  <style>
+    body {
+    .aura-dark-theme, .aura-dark-theme * { scrollbar-width: thin; scrollbar-color: #4a5568 #1a202c; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-track { background: #1a202c; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb { background: #4a5568; border-radius: 2px; }
+    .aura-dark-theme::-webkit-scrollbar, .aura-dark-theme *::-webkit-scrollbar-thumb:hover { background: #718096; }
+      margin: 0;
+      padding: 2rem;
+      background-color: #05070a;
+      color: #ffffff;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    }
+</style>
+</head>
+<body>
+<div class="aura-dark-theme">
+  <div style="margin-top: 1rem; margin-bottom: 2rem; padding: 1rem; background: #1f2937; border: 1px solid rgba(0,210,255,0.3); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); max-width: 320px; position: relative;">
+    <div style="position: absolute; left: -5px; top: 20px; width: 10px; height: 10px; background: #1f2937; border-bottom: 1px solid rgba(0,210,255,0.3); border-left: 1px solid rgba(0,210,255,0.3); transform: rotate(45deg);"></div>
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <div style="width: 24px; height: 24px; border-radius: 50%; background: rgba(0,210,255,0.1); border: 2px solid #00d2ff; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; color: #00d2ff;">I-99</div>
+        <h4 style="margin: 0; color: #e0e0e6; font-size: 0.9rem;">节点详情 (Node Details)</h4>
+    </div>
+    <div style="color: #9090a0; font-size: 0.8rem; line-height: 1.5; display: flex; flex-direction: column; gap: 4px;">
+        <div style="display: flex; justify-content: space-between;"><span>类型:</span> <span style="color: #00d2ff;">Intent Tensor</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>置信度 (Confidence):</span> <span style="color: #e0e0e6;">0.92</span></div>
+        <div style="display: flex; justify-content: space-between;"><span>因果溯源 (Parent):</span> <span style="color: #10b981;">E-12</span></div>
+        <div style="margin-top: 4px; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.05); color: #e0e0e6; font-size: 0.75rem;">
+            提取内容: "用户希望通过 Cgroups 限制系统内存配额。"
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>

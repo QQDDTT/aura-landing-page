@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.3.1 移动端：核心人格与策略控制中心 (Persona Configurator) (LIGHT)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>.mock-dash { display: flex; flex-direction: column; gap: 1.5rem; }
+  .mock-nav { display: flex; gap: 1rem; align-items: center; }
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  .mock-mobile-btn { display: none; font-size: 1.2rem; cursor: pointer; color: #4a5568; }
+  .mock-flex-row { display: flex; gap: 1.5rem; align-items: stretch; flex-wrap: wrap; }
+  .mock-footer { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 0.8rem 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; border-bottom: 2px solid #3182ce; margin-top: 0.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  @media (max-width: 768px) {
+    .mock-nav { display: none; }
+    .mock-mobile-btn { display: block; }
+    .mock-flex-row { flex-direction: column; }
+    .mock-footer { font-size: 0.65rem; flex-direction: column; gap: 8px; padding: 10px; align-items: flex-start; }
+  }</style>
+  <style>
+    body {
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      margin: 0;
+      padding: 2rem;
+      background-color: #faf9f8;
+      color: #2d3748;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    }
+</style>
+</head>
+<body>
+<div class="aura-light-theme">
+  <div style="width: 375px; height: 600px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; width: 375px; background-color: #faf9f8; color: #2d3748; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; padding: 1.5rem 1rem; border-radius: 24px; border: 8px solid #e2e8f0; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; margin-left: auto; margin-right: auto;">
+  <!-- Mobile Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.85); padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid #e2e8f0; border-top: 2px solid #dd6b20;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <span style="color: #dd6b20; font-size: 1.2rem; text-shadow: 0 0 10px #dd6b20;">🎭</span>
+      <strong style="font-size: 1rem; letter-spacing: 1px;">PERSONA</strong><span style="background: rgba(221, 107, 32, 0.2); color: #dd6b20; font-size: 0.6rem; padding: 2px 4px; border-radius: 4px; border: 1px solid rgba(221, 107, 32, 0.4); margin-left: 6px;">v4.0</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38a169; box-shadow: 0 0 8px #38a169;"></span>
+      <span style="font-size: 1.2rem; cursor: pointer; color: #718096;">☰</span>
+    </div>
+  </div>
+  <!-- Target Bot Selector (Bots Style) -->
+  <div style="display:flex;flex-direction:column;gap:0.8rem;">
+    <!-- Bot 1: Active -->
+    <div style="display:flex;align-items:center;justify-content:space-between;background:rgba(221,107,32,0.08);padding:10px 12px;border-radius:8px;border:1px solid rgba(221,107,32,0.25);cursor:pointer;">
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <strong style="font-size:0.85rem;color:#1a202c;">@aura_primary_bot</strong>
+        <span style="font-size:0.68rem;color:#dd6b20;">● Editing Persona</span>
+      </div>
+      <div style="width:32px;height:16px;background:#dd6b20;border-radius:8px;position:relative;">
+        <div style="width:12px;height:12px;background:#fff;border-radius:50%;position:absolute;right:2px;top:2px;"></div>
+      </div>
+    </div>
+    <!-- Bot 2: Other -->
+    <div style="display:flex;align-items:center;justify-content:space-between;background:#ffffff;padding:10px 12px;border-radius:8px;border:1px solid #e2e8f0;cursor:pointer;">
+      <div style="display:flex;flex-direction:column;gap:3px;">
+        <strong style="font-size:0.85rem;color:#4a5568;">@aura_research_bot</strong>
+        <span style="font-size:0.68rem;color:#a0aec0;">○ Idle</span>
+      </div>
+      <div style="width:32px;height:16px;background:#cbd5e1;border-radius:8px;position:relative;">
+        <div style="width:12px;height:12px;background:#f8fafc;border-radius:50%;position:absolute;left:2px;top:2px;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- Mobile Prompt -->
+  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem;">
+    <h3 style="color: #dd6b20; font-size: 0.8rem; margin-top: 0; margin-bottom: 0.8rem;">Core System Prompt</h3>
+    <div style="background: rgba(0, 0, 0, 0.02); border: 1px dashed #e2e8f0; padding: 0.8rem; border-radius: 8px; color: #2d3748; font-size: 0.75rem; line-height: 1.5; font-family: monospace;">
+      <span style="color: #718096;"># identity</span><br>
+      You are Aura, governed by VFE.<br><br>
+      <span style="color: #718096;"># behavior</span><br>
+      1. Minimize entropy.<br>
+      2. Use technical language.
+    </div>
+  </div>
+  <!-- Mobile Sliders -->
+  <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; display: flex; flex-direction: column; gap: 1.2rem;">
+    <div>
+      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #2d3748; margin-bottom: 8px;"><span>MLP 共鸣阈值</span> <span style="color: #dd6b20;">0.85</span></div>
+      <div style="height: 4px; background: #e2e8f0; border-radius: 2px; position: relative;">
+        <div style="width: 85%; height: 100%; background: #dd6b20; border-radius: 2px;"></div>
+        <div style="position: absolute; left: 85%; top: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #fff; border-radius: 50%; box-shadow: 0 0 5px #e2e8f0;"></div>
+      </div>
+    </div>
+    <div>
+      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #2d3748; margin-bottom: 8px;"><span>安全拦截</span> <span style="color: #e53e3e;">High</span></div>
+      <div style="height: 4px; background: #e2e8f0; border-radius: 2px; position: relative;">
+        <div style="width: 100%; height: 100%; background: #e53e3e; border-radius: 2px;"></div>
+        <div style="position: absolute; left: 100%; top: 50%; transform: translate(-50%, -50%); width: 10px; height: 10px; background: #fff; border-radius: 50%; box-shadow: 0 0 5px #e2e8f0;"></div>
+      </div>
+    </div>
+    <div>
+      <div style="display: flex; justify-content: space-between; font-size: 0.75rem; color: #2d3748; margin-bottom: 8px;"><span>默认交互语言</span></div>
+      <select style="width:100%;box-sizing:border-box;background:#f8fafc;border:1px solid #cbd5e1;color:#dd6b20;padding:8px;border-radius:4px;font-size:0.75rem;outline:none;cursor:pointer;font-weight:600;">
+        <option value="zh-CN">中文 (zh-CN)</option>
+        <option value="en-US">English (en-US)</option>
+        <option value="auto">Auto Detect</option>
+      </select>
+    </div>
+  </div>
+  <!-- Mobile Footer -->
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 10px; border-top: 1px solid #e2e8f0; font-size: 0.65rem; color: #718096; margin-top: 0.5rem;">
+    <span>ID: <span style="color: #3182ce;">0x9A4F2</span></span>
+    <span>Up: 142h</span>
+  </div>
+</div>
+</div>
+</body>
+</html>

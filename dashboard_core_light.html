@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.1 核心主监控台 (Core Dashboard) (LIGHT)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>.mock-dash { display: flex; flex-direction: column; gap: 1.5rem; }
+  .mock-nav { display: flex; gap: 1rem; align-items: center; }
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  .mock-mobile-btn { display: none; font-size: 1.2rem; cursor: pointer; color: #4a5568; }
+  .mock-flex-row { display: flex !important; gap: 1.5rem; align-items: stretch; flex-wrap: nowrap !important; flex-direction: row !important; }
+  .mock-footer { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 0.8rem 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; border-bottom: 2px solid #3182ce; margin-top: 0.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  @media (max-width: 768px) {
+    .mock-nav { display: none; }
+    .mock-mobile-btn { display: block; }
+    .mock-flex-row { flex-direction: row !important; }
+    .mock-footer { font-size: 0.65rem; flex-direction: column; gap: 8px; padding: 10px; align-items: flex-start; }
+  }</style>
+  <style>
+    body {
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      margin: 0;
+      padding: 2rem;
+      background-color: #faf9f8;
+      color: #2d3748;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    }
+</style>
+</head>
+<body>
+<div class="aura-light-theme">
+  <div class="mock-dash" style="width: 1200px; height: 620px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; background-color: #faf9f8; color: #2d3748; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif; padding: 2rem; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 10px 30px #e2e8f0; margin-bottom: 2rem; margin-left: auto; margin-right: auto; position: relative;">
+  <!-- Header (Workspace Active) -->
+  <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255, 255, 255, 0.85); padding: 1rem 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; border-top: 2px solid #3182ce;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <span style="color: #3182ce; font-size: 1.5rem; text-shadow: 0 0 10px #3182ce;">⚡</span>
+      <strong style="font-size: 1.2rem; letter-spacing: 1px; color: #2d3748;">AURA DASHBOARD</strong>
+      <span style="background: rgba(128, 90, 213, 0.2); color: #9f7aea; font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(128, 90, 213, 0.4);">v4.0</span>
+    </div>
+    <div class="mock-nav">
+      <span style="font-size: 0.85rem; color: #3182ce; padding: 4px 8px; cursor: pointer; border-bottom: 2px solid #3182ce;">Core</span>
+      <span style="font-size: 0.85rem; color: #718096; padding: 4px 8px; cursor: pointer;">Audit</span>
+      <span style="font-size: 0.85rem; color: #718096; padding: 4px 8px; cursor: pointer;">Memory</span>
+      <span style="font-size: 0.85rem; color: #718096; padding: 4px 8px; cursor: pointer;">Persona</span>
+      <span style="font-size: 0.85rem; color: #718096; padding: 4px 8px; cursor: pointer;">Settings</span>
+      <div style="width: 1px; height: 14px; background: rgba(0, 0, 0, 0.08); margin: 0 4px;"></div>
+      <span style="font-size: 1rem; cursor: pointer; color: #718096;" title="切换语言 (Language)">🌐</span>
+      <span style="font-size: 1rem; cursor: pointer; color: #3182ce;" title="切换主题 (Theme)">🌙</span>
+    </div>
+    <div style="font-size: 0.85rem; color: #38a169; display: flex; align-items: center; gap: 8px;">
+      <span class="mock-nav" style="display: flex; align-items: center; gap: 8px;">
+        <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38a169; box-shadow: 0 0 8px #38a169;"></span>
+        KERNEL ONLINE
+      </span>
+      <span class="mock-mobile-btn">☰</span>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div class="mock-flex-row">
+    <!-- Module Lifecycle -->
+    <div style="flex: 0 0 70%; box-sizing: border-box; background: #ffffff; border: 1px solid #e2e8f0; border-top: 2px solid #38a169; border-radius: 12px; padding: 1.5rem; position: relative; display: flex; flex-direction: column; max-height: 280px; overflow: hidden;">
+      <h3 style="color: #718096; font-size: 0.9rem; text-transform: uppercase; margin-top: 0; margin-bottom: 1rem; flex: 0 0 auto;">Module Lifecycle (模块生命周期)</h3>
+      <div id="thought-stream-container" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; padding-right: 4px;">
+        <div style="background: rgba(56, 161, 105, 0.05); border-left: 3px solid #38a169; padding: 12px; border-radius: 0 8px 8px 0; margin-bottom: 1rem; flex-shrink: 0;">
+          <span style="color: #718096; font-size: 0.8rem; margin-right: 8px;">[16:09:17]</span>
+          <span style="color: #2d3748; font-size: 0.9rem;"><strong style="color: #38a169;">[START]</strong> aura-execution 沙箱模块启动... 分配配额 256MB</span>
+        </div>
+        <div style="background: rgba(49, 130, 206, 0.05); border-left: 3px solid #3182ce; padding: 12px; border-radius: 0 8px 8px 0; margin-bottom: 1rem; flex-shrink: 0;">
+          <span style="color: #718096; font-size: 0.8rem; margin-right: 8px;">[16:09:19]</span>
+          <span style="color: #2d3748; font-size: 0.9rem;"><strong style="color: #3182ce;">[MOUNT]</strong> tmpfs 挂载至 /sandbox/jail/ 成功，读写层隔离完毕。</span>
+        </div>
+        <div style="background: rgba(128, 90, 213, 0.05); border-left: 3px solid #805ad5; padding: 12px; border-radius: 0 8px 8px 0; margin-bottom: 1rem; flex-shrink: 0;">
+          <span style="color: #718096; font-size: 0.8rem; margin-right: 8px;">[16:09:20]</span>
+          <span style="color: #2d3748; font-size: 0.9rem;"><strong style="color: #805ad5;">[SLEEP]</strong> aura-inference 空闲超阈值，进入深度休眠降耗 (C3)。</span>
+        </div>
+        <div style="background: rgba(229, 62, 62, 0.05); border-left: 3px solid #e53e3e; padding: 12px; border-radius: 0 8px 8px 0; margin-bottom: 1rem; flex-shrink: 0;">
+          <span style="color: #718096; font-size: 0.8rem; margin-right: 8px;">[16:09:22]</span>
+          <span style="color: #2d3748; font-size: 0.9rem;"><strong style="color: #e53e3e;">[PANIC]</strong> aura-skill-developer (PID: 3410) 内存溢出警告，请求拦截。</span>
+        </div>
+        <div style="background: rgba(221, 107, 32, 0.05); border-left: 3px solid #dd6b20; padding: 12px; border-radius: 0 8px 8px 0; flex-shrink: 0;">
+          <span style="color: #718096; font-size: 0.8rem; margin-right: 8px;">[16:09:25]</span>
+          <span style="color: #2d3748; font-size: 0.9rem;"><strong style="color: #dd6b20;">[STOP]</strong> aura-skill-developer 引擎已被 OS 安全终止。</span>
+        </div>
+      </div>
+    </div>
+    <!-- Right Panel Group -->
+    <div style="flex: 0 0 calc(30% - 1.5rem); box-sizing: border-box; display: flex; flex-direction: column; gap: 1.5rem;">
+      <!-- Compute Metrics -->
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; flex: 1;">
+        <h3 style="color: #3182ce; font-size: 0.9rem; margin-top: 0; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 6px;">
+          <span style="display: inline-block; width: 6px; height: 6px; background: #3182ce; border-radius: 50%; box-shadow: 0 0 6px #3182ce;"></span> Compute Metrics
+        </h3>
+        <div style="font-size: 2rem; font-weight: bold; background: linear-gradient(135deg, #2b6cb0, #805ad5); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">12% <span style="font-size:1.2rem;color:#718096;">/ 45%</span></div>
+        <div style="font-size: 0.8rem; color: #718096; margin-bottom: 1rem; display: flex; align-items: center; gap: 4px;">
+          <span>CPU & NPU Usage</span>
+          <span style="display: inline-block; width: 14px; height: 14px; border-radius: 50%; background: #e2e8f0; color: #718096; font-size: 0.6rem; text-align: center; line-height: 14px; cursor: pointer; border: 1px solid rgba(0,0,0,0.1);" title="CPU 处理常规系统调度；NPU 专用于底层的本地向量计算与高并发检索。">?</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <div style="height: 4px; background: rgba(0,0,0,0.03); border-radius: 2px; overflow: hidden;">
+            <div style="width: 12%; height: 100%; background: #3182ce; box-shadow: 0 0 8px rgba(49,130,206,0.4); border-radius: 2px;"></div>
+          </div>
+          <div style="height: 4px; background: rgba(0,0,0,0.03); border-radius: 2px; overflow: hidden;">
+            <div style="width: 45%; height: 100%; background: #805ad5; box-shadow: 0 0 8px rgba(128,90,213,0.4); border-radius: 2px;"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Memory Quota -->
+      <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.5rem; flex: 1;">
+        <h3 style="color: #38a169; font-size: 0.9rem; margin-top: 0; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 6px;">
+          <span style="display: inline-block; width: 6px; height: 6px; background: #38a169; border-radius: 50%; box-shadow: 0 0 6px #38a169;"></span> Memory Quota
+        </h3>
+        <div style="font-size: 2rem; font-weight: bold; background: linear-gradient(135deg, #2f855a, #38a169); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">8.4GB <span style="font-size:1.2rem;color:#718096;">/ 32GB</span></div>
+        <div style="font-size: 0.8rem; color: #718096; margin-bottom: 1rem;">Active RAM / Limit</div>
+        <div style="height: 6px; background: rgba(0,0,0,0.03); border-radius: 3px; overflow: hidden;">
+          <div style="width: 26%; height: 100%; background: #38a169; box-shadow: 0 0 8px rgba(56,161,105,0.4); border-radius: 3px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer -->
+  <div class="mock-footer">
+    <div style="font-size: 0.8rem; color: #718096;">
+      <span>TraceID: <span style="color: #3182ce; font-family: monospace;">0x9A4F2-E93C</span> &nbsp;|&nbsp; Mode: <span style="color: #3182ce; font-family: monospace;">Dashboard</span></span>
+    </div>
+    <div style="display: flex; gap: 1.5rem;">
+      <span style="font-size: 0.8rem; color: #718096;">Uptime: 142h 13m</span>
+      <span class="mock-nav" style="font-size: 0.8rem; color: #718096;">Aura OS Core Platform</span>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

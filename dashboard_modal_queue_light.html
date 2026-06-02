@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Dashboard - 5.1.2 弹窗：并发配额详细 (LIGHT)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code&display=swap" rel="stylesheet">
+  <style>.mock-dash { display: flex; flex-direction: column; gap: 1.5rem; }
+  .mock-nav { display: flex; gap: 1rem; align-items: center; }
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+  .mock-mobile-btn { display: none; font-size: 1.2rem; cursor: pointer; color: #4a5568; }
+  .mock-flex-row { display: flex; gap: 1.5rem; align-items: stretch; flex-wrap: wrap; }
+  .mock-footer { display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 0.8rem 1.5rem; border-radius: 8px; border: 1px solid #e2e8f0; border-bottom: 2px solid #3182ce; margin-top: 0.5rem; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  @media (max-width: 768px) {
+    .mock-nav { display: none; }
+    .mock-mobile-btn { display: block; }
+    .mock-flex-row { flex-direction: column; }
+    .mock-footer { font-size: 0.65rem; flex-direction: column; gap: 8px; padding: 10px; align-items: flex-start; }
+  }</style>
+  <style>
+    body {
+    .aura-light-theme, .aura-light-theme * { scrollbar-width: thin; scrollbar-color: #cbd5e1 #f1f5f9; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar { width: 4px; height: 4px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-track { background: #f1f5f9; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
+    .aura-light-theme::-webkit-scrollbar, .aura-light-theme *::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+      margin: 0;
+      padding: 2rem;
+      background-color: #faf9f8;
+      color: #2d3748;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', sans-serif;
+    }
+</style>
+</head>
+<body>
+<div class="aura-light-theme">
+  <div style="margin-top: 2rem; padding: 1.5rem; background: #faf9f8; border: 1px solid #3182ce; border-radius: 12px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); max-width: 450px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem;">
+        <h3 style="color: #805ad5; margin: 0; font-size: 1rem;">任务队列详情 (Task Queue Modal)</h3>
+        <span style="cursor: pointer; color: #718096; font-size: 0.8rem;">关闭</span>
+    </div>
+    <div>
+        <h4 style="color: #38a169; margin: 0 0 8px 0; font-size: 0.9rem;">并发进行中 (Running)</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.05); border-radius: 6px; border-left: 3px solid #38a169; font-size: 0.85rem;">Task #991: 生成并编译 Cgroups 配置</div>
+            <div style="padding: 8px 12px; background: rgba(16, 185, 129, 0.05); border-radius: 6px; border-left: 3px solid #38a169; font-size: 0.85rem;">Task #993: WebSocket 实时数据中继</div>
+        </div>
+        <h4 style="color: #718096; margin: 16px 0 8px 0; font-size: 0.9rem;">等待/待机中 (Pending)</h4>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+            <div style="padding: 8px 12px; background: rgba(245, 158, 11, 0.05); border-radius: 6px; border-left: 3px solid #dd6b20; font-size: 0.85rem;">Task #994: 等待 API 响应 (Gemini Endpoint)</div>
+        </div>
+    </div>
+</div>
+</div>
+</body>
+</html>
