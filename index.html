@@ -341,16 +341,17 @@
         /* 移动端全面适配 (Mobile Responsiveness) */
         @media (max-width: 768px) {
             /* 基础排版 */
-            body { overflow-x: hidden; }
+            body { overflow-x: hidden; overflow-y: auto; }
             .slide.active { 
-                height: 100vh; 
-                overflow-y: auto; 
+                height: auto; 
+                min-height: 100vh;
+                overflow-y: visible; 
                 justify-content: flex-start;
-                padding-top: 7rem;
+                padding-top: 8rem;
                 padding-bottom: 4rem;
                 display: block;
             }
-            .hero.slide.active { display: flex; padding-top: 6rem; }
+            .hero.slide.active { display: flex; padding-top: 7rem; }
 
             /* 头部导航 */
             header {
@@ -946,15 +947,19 @@
                 
                 const slide = slides[currentIndex];
                 
-                // 检查是否在滚动容器内
+                // 检查是否在全局滚动容器内
                 let isScrollable = false;
                 let isAtBottom = false;
                 let isAtTop = false;
                 
-                if (slide && slide.scrollHeight > slide.clientHeight + 2) {
+                const docHeight = document.documentElement.scrollHeight;
+                const winHeight = window.innerHeight;
+                const scrollY = window.scrollY;
+                
+                if (docHeight > winHeight + 2) {
                     isScrollable = true;
-                    isAtBottom = slide.scrollHeight - slide.scrollTop - slide.clientHeight < 20;
-                    isAtTop = slide.scrollTop < 20;
+                    isAtBottom = docHeight - scrollY - winHeight < 20;
+                    isAtTop = scrollY < 20;
                 }
                 
                 if (diff > 0) {
